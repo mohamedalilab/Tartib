@@ -1,0 +1,59 @@
+# ========================================
+#  DEPENDENCIES & PACKAGE MANAGERS
+# ========================================
+node_modules/
+**/node_modules/
+.npm
+.eslintcache
+.parcel-cache
+.cache/
+*-debug.log*
+*-error.log*
+
+# ========================================
+#  SECURITY & ENVIRONMENT
+# ========================================
+# Ignore all environment files everywhere
+.env
+.env.*
+**/.env*
+# Specific overrides for your folders
+client/.env.local
+admin/.env.local
+server/.env
+
+# ========================================
+#  BUILD & OUTPUT
+# ========================================
+dist/
+build/
+**/dist/
+**/build/
+coverage/
+.nyc_output/
+
+# ========================================
+#  IDE, EDITORS & OS
+# ========================================
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ========================================
+#  APP SPECIFIC (Tartib / Obsidian style)
+# ========================================
+# Ignore temporary uploads or local notes that aren't part of the app
+uploads/
+tmp/
+temp/
+# If you use Obsidian locally in the project root for planning:
+.obsidian/
+
+# ========================================
+#  TAILWIND & VITE
+# ========================================
+# Vite specific cache
+.vite/
