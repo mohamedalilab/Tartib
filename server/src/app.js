@@ -3,6 +3,7 @@ import dotenv from "dotenv"
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
+import routerHandler from "./routes/index.js";
 
 
 dotenv.config();
@@ -25,6 +26,7 @@ const createApp = () => {
   // ======================== SECURE
 
   // ======================== ROUTE Handler
+  routerHandler(app)
 
   // ======================== ERROR Handler
   // Error handler must be last thing
