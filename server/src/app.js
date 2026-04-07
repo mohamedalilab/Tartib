@@ -4,6 +4,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import routerHandler from "./routes/index.js";
+import { errorHandler } from "./errors/errorHandler.js";
 
 
 dotenv.config();
@@ -30,6 +31,7 @@ const createApp = () => {
 
   // ======================== ERROR Handler
   // Error handler must be last thing
+  // errorHandler)
 
   return app;
 };
