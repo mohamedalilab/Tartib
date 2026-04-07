@@ -1,0 +1,31 @@
+import dotenv from "dotenv";
+
+dotenv.config();
+
+export const env = {
+  // Application
+  NODE_ENV: process.env.NODE_ENV || "development",
+  PORT: process.env.PORT || 4000,
+  SHUTDOWN_TIMEOUT: parseInt(process.env.SHUTDOWN_TIMEOUT) || 15_000,
+  
+  // Development flags
+  isDevelopment: process.env.NODE_ENV === "development",
+  isProduction: process.env.NODE_ENV === "production",
+
+  // Frontend
+  CLIENT_URL: process.env.CLIENT_URL,
+  ADMIN_URL: process.env.ADMIN_URL,
+
+  // Database
+  DATABASE_URI: process.env.DATABASE_URI,
+
+  // Cookies
+  COOKIE: {
+    REFRESH_MAX_AGE:
+      parseInt(process.env.COOKIE_REFRESH_MAX_AGE) || 2 * 24 * 60 * 60 * 1000,
+    HTTP_ONLY: process.env.COOKIE_HTTP_ONLY === "true",
+    SECURE: process.env.COOKIE_SECURE === "true",
+    SAME_SITE: process.env.COOKIE_SAME_SITE || "lax",
+  },
+
+};
