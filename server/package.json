@@ -1,0 +1,27 @@
+{
+  "name": "tartib-client",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Backend API for a productivity app",
+  "main": "index.js",
+  "author": "mohamed ali",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "prod": "NODE_ENV=production node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "mongodb",
+    "api",
+    "backend",
+    "authentication",
+    "notes",
+    "tasks",
+    "productivity"
+  ],
+  "license": "ISC",
+  "packageManager": "pnpm@10.33.0"
+}
