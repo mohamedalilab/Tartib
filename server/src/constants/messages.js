@@ -17,6 +17,13 @@ export const MESSAGES = {
     CONFLICT: "Resource already exists", // 409
   },
 
+  DATABASE: {
+    CONNECTED: "MongoDB connection established successfully",
+    DISCONNECTED: "MongoDB connection closed",
+    CONNECTION_ERROR: "MongoDB connection failed",
+    DISCONNECTION_ERROR: "Error during MongoDB disconnection",
+  },
+
   AUTH: {
     // success
     REGISTER_SUCCESS: "Registered successfully",

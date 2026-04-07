@@ -1,11 +1,14 @@
 import createApp from "./app.js";
 import { env } from "./config/env.js";
+import connectDB from "./DB/connection.js";
 
 // server instance
 let server;
 
 // STARTSERVER
 const startServer = async () => {
+  // connect Database
+  await connectDB()
   // Create app
   const app = createApp();
   // Start HTTP server
