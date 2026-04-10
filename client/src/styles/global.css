@@ -1,0 +1,119 @@
+/**
+ * Architecture:
+ *    1. @theme  — Semantic color tokens, typography, spacing, radius
+ *    2. @layer base — Global resets, body, typographic defaults
+ *    3. @layer components — Reusable UI class primitives
+ *    4. @layer utilities — Reusable utilities
+ */
+
+@import "tailwindcss";
+
+@theme {
+  /* ----------------------------------------------------------
+    COLORS
+    ---------------------------------------------------------*/
+
+  /* SURFACE PALETTE - "Paper" system */
+  /* Light Mode Defaults */
+  --color-background: #faf9f7; /* Base canvas — warm paper */
+  --color-surface: #faf9f7; /* Default surface */
+  --color-surface-bright: #faf9f7; /* Elevated surface */
+  --color-surface-dim: #d6dbd7; /* Recessed surface */
+
+  /* Tonal container scale — used for "stacked paper" depth */
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f3f4f1;
+  --color-surface-container: #edeeeb;
+  --color-surface-container-high: #e6e9e6;
+  --color-surface-container-highest: #e0e3e0;
+
+  /* Inverse surfaces for reversed contexts */
+  --color-inverse-surface: #0d0e0e;
+  --color-inverse-on-surface: #9d9d9b;
+
+  /* Text and icon colors that rest on the surfaces above. */
+  --color-on-background: #2f3331;
+  --color-on-surface: #2f3331;
+  --color-on-surface-variant: #5c605d;
+
+  /* PRIMARY - brand */
+  --color-primary: #5f5e5e;
+  --color-primary-dim: #535252;
+  --color-primary-fixed: #e5e2e1;
+  --color-primary-fixed-dim: #d6d4d3;
+  --color-primary-container: #e5e2e1;
+  --color-inverse-primary: #ffffff;
+
+  --color-on-primary: #faf7f6;
+  --color-on-primary-container: #525151;
+  --color-on-primary-fixed: #403f3f;
+  --color-on-primary-fixed-variant: #5c5b5b;
+
+  /* SECONDARY — mid-tone for supporting content */
+  --color-secondary: #5f5f5a;
+  --color-secondary-dim: #53534e;
+  --color-secondary-fixed: #e4e2db;
+  --color-secondary-fixed-dim: #d6d4ce;
+  --color-secondary-container: #e4e2db;
+
+  --color-on-secondary: #fbf9f2;
+  --color-on-secondary-container: #52524d;
+  --color-on-secondary-fixed: #3f403b;
+  --color-on-secondary-fixed-variant: #5c5c56;
+
+  /* TERTIARY — Muted slate-blue */
+  --color-tertiary: #486272;
+  --color-tertiary-dim: #3c5666;
+  --color-tertiary-fixed: #d0ecff;
+  --color-tertiary-fixed-dim: #c2def0;
+  --color-tertiary-container: #d0ecff;
+
+  --color-on-tertiary: #f4faff;
+  --color-on-tertiary-container: #3e5868;
+  --color-on-tertiary-fixed: #2c4655;
+  --color-on-tertiary-fixed-variant: #486272;
+
+  /* ACCENT — Terracotta - active/selected state indication. */
+  --color-accent: #d97757;
+  --color-accent-on: #faf7f6;
+
+  /* ERROR / DESTRUCTIVE */
+  --color-error: #9f403d;
+  --color-error-dim: #4e0309;
+  --color-error-container: #fe8983;
+
+  --color-on-error: #fff7f6;
+  --color-on-error-container: #752121;
+
+  /* OUTLINE / BORDER TOKENS */
+  --color-outline: #777c79;
+  --color-outline-variant: #afb3b0;
+}
+
+/* Tell Tailwind to trigger "dark" variants based on a class */
+@variant dark (&:where(.dark, .dark *));
+/* Dark Mode Overrides via CSS custom property re-definition */
+/* Applied when .dark class is present on <html> */
+@variant dark {
+  & {
+    --color-background: #1b1b18;
+    --color-surface: #1b1b18;
+    --color-surface-container-low: #1b1b18;
+    --color-surface-container: #252525;
+    --color-surface-container-high: #252525;
+    --color-surface-container-highest: #333330;
+    --color-surface-dim: #151512;
+
+    --color-on-background: #ebe9e4;
+    --color-on-surface: #ebe9e4;
+    --color-on-surface-variant: #afb3b0;
+
+    --color-primary: #ebe9e4;
+    --color-on-primary: #1b1b18;
+    --color-primary-container: #252525;
+    --color-on-primary-container: #ebe9e4;
+
+    --color-outline: #333330;
+    --color-outline-variant: #333330;
+  }
+}
