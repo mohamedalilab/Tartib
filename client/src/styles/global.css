@@ -12,7 +12,6 @@
   /* ----------------------------------------------------------
     COLORS
     ---------------------------------------------------------*/
-
   /* SURFACE PALETTE - "Paper" system */
   /* Light Mode Defaults */
   --color-background: #faf9f7; /* Base canvas — warm paper */
@@ -88,6 +87,96 @@
   /* OUTLINE / BORDER TOKENS */
   --color-outline: #777c79;
   --color-outline-variant: #afb3b0;
+
+  /* ----------------------------------------------------------
+    TYPOGRAPHY — Serif / Sans 
+    ---------------------------------------------------------- */
+
+  --font-display: "Lora", "Noto Serif", Georgia, serif;
+  --font-headline: "Noto Serif", "Lora", Georgia, serif;
+  --font-body: "Inter", system-ui, -apple-system, sans-serif;
+  --font-label: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+
+  /* Type Scale — Named semantic steps */
+  --text-display-lg: 3.5rem; /* 56px — masthead headlines */
+  --text-display-md: 3rem; /* 48px — hero titles */
+  --text-display-sm: 2.25rem; /* 36px — section openers */
+
+  --text-headline-lg: 1.875rem; /* 30px — card headers */
+  --text-headline-md: 1.5rem; /* 24px — sub-section titles */
+  --text-headline-sm: 1.25rem; /* 20px — component titles */
+
+  --text-title-lg: 1.125rem; /* 18px — emphasized body */
+  --text-title-md: 1rem; /* 16px — standard title */
+  --text-title-sm: 0.875rem; /* 14px — compact title */
+
+  --text-body-lg: 1.125rem; /* 18px — editorial body */
+  --text-body-md: 0.875rem; /* 14px — workhorse body */
+  --text-body-sm: 0.75rem; /* 12px — captions */
+
+  --text-label-lg: 0.875rem; /* 14px */
+  --text-label-md: 0.75rem; /* 12px — metadata, tags */
+  --text-label-sm: 0.625rem; /* 10px — micro-labels */
+
+  /* Letter Spacing */
+  --tracking-display: -0.02em; /* Negative — premium headline authority */
+  --tracking-label: 0.05em; /* Positive — all-caps label discipline */
+  --tracking-micro: 0.2em; /* Wide — micro-category labels */
+
+  /* Line Heights */
+  --leading-display: 1.1; /* Tight — headlines */
+  --leading-headline: 1.25; /* Compact — card titles */
+  --leading-body: 1.6; /* Generous — scholarly reading */
+  --leading-editorial: 1.8; /* Wide — long-form essays */
+  --leading-label: 1.4; /* Utility — UI labels */
+
+  /* ----------------------------------------------------------
+    SPACING SCALE
+    ---------------------------------------------------------- */
+
+  --spacing-1: 0.25rem; /* 4px  */
+  --spacing-2: 0.5rem; /* 8px  */
+  --spacing-3: 0.75rem; /* 12px */
+  --spacing-4: 1rem; /* 16px — base unit */
+  --spacing-5: 1.25rem; /* 20px */
+  --spacing-6: 1.5rem; /* 24px */
+  --spacing-8: 2rem; /* 32px */
+  --spacing-10: 2.5rem; /* 40px */
+  --spacing-12: 3rem; /* 48px */
+  --spacing-16: 4rem; /* 64px */
+  --spacing-20: 5rem; /* 80px */
+  --spacing-24: 6rem; /* 96px */
+  --spacing-32: 8rem; /* 128px — section breathing room */
+
+  /* ----------------------------------------------------------
+    BORDER RADIUS
+    ---------------------------------------------------------- */
+
+  --radius-none: 0rem;
+  --radius-sm: 0.125rem; /* 2px  — default, sharp/precise */
+  --radius-md: 0.25rem; /* 4px  — buttons, cards */
+  --radius-lg: 0.5rem; /* 8px  — overlays, modals */
+  --radius-pill: 0.75rem; /* 12px — chips, tags only */
+
+  /* ----------------------------------------------------------
+    ELEVATION / SHADOW
+    ---------------------------------------------------------- */
+
+  --shadow-float: 0 0 40px 0 rgba(47, 51, 49, 0.04); /* Floating menus */
+  --shadow-overlay: 0 4px 24px 0 rgba(47, 51, 49, 0.08); /* Modals/drawers */
+  /* Shadow: ambient only (on-surface at 4%) */
+  /* --shadow-ambient: 0 20px 40px 0
+    color-mix(in oklab, var(--color-on-surface) 4%, transparent); */
+
+  /* ----------------------------------------------------------
+    TRANSITIONS
+    ---------------------------------------------------------- */
+
+  --duration-fast: 150ms;
+  --duration-base: 300ms;
+  --duration-slow: 700ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
 }
 
 /* Tell Tailwind to trigger "dark" variants based on a class */
@@ -117,3 +206,4 @@
     --color-outline-variant: #333330;
   }
 }
+
