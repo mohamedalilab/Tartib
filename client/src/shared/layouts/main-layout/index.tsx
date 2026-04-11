@@ -5,7 +5,7 @@ import Footer from "./Footer";
 
 function MainLayout() {
   return (
-    <div className="flex flex-column h-screen overflow-hidden">
+    <div className="dark flex flex-col h-screen overflow-hidden">
       <Header />
       <main className="flex-1 scroll-smooth">
         <Suspense fallback={<h2>loading....</h2>}>

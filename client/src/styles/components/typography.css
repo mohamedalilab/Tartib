@@ -1,0 +1,85 @@
+@layer components {
+    /* Display — Lora, masthead authority */
+  .text-display-lg,
+  .text-display-md,
+  .text-display-sm {
+    @apply font-display font-bold leading-display tracking-display;
+  }
+  .text-display-lg {
+    @apply text-display-lg;
+  }
+
+  .text-display-md {
+    @apply text-display-md;
+  }
+
+  .text-display-sm {
+    @apply text-display-sm font-semibold;
+  }
+
+  /* Headline — structural section titles */
+  .text-headline-lg,
+  .text-headline-md,
+  .text-headline-sm {
+    @apply font-display font-medium leading-headline;
+  }
+  .text-headline-lg {
+    @apply text-headline-lg;
+  }
+
+  .text-headline-md {
+    @apply text-headline-md;
+  }
+
+  .text-headline-sm {
+    @apply text-headline-sm;
+  }
+
+  /* Body — Inter, functional */
+  .text-body-lg,
+  .text-body-md,
+  .text-body-sm {
+    @apply font-body leading-body;
+  }
+
+  .text-body-lg {
+    @apply text-body-lg;
+  }
+
+  .text-body-md {
+    @apply text-body-md;
+  }
+
+  .text-body-sm {
+    @apply text-body-sm leading-label;
+  }
+
+  /* Label — all-caps Inter, metadata discipline */
+  .text-label-lg,
+  .text-label-md,
+  .text-label-sm {
+    @apply font-label font-semibold uppercase tracking-label leading-body;
+  }
+  .text-label-lg {
+    @apply text-label-lg;
+  }
+
+  .text-label-md {
+    @apply text-label-md;
+  }
+
+  .text-label-sm {
+    @apply text-label-sm;
+  }
+
+  /* Editorial long-form body — Lora, generous leading */
+  .text-editorial {
+    @apply font-display text-headline-sm leading-editorial text-on-surface;
+  }
+
+  /* Italic serif accent — used for sub-headlines, pull-quotes */
+  .text-serif-italic {
+    @apply font-display italic font-normal;
+  }
+
+}

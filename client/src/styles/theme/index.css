@@ -1,0 +1,26 @@
+@import "./colors.css";
+@import "./layout.css";
+@import "./typography.css";
+@import "./spacing.css";
+
+
+@theme {
+  --radius-none: 0rem;
+  --radius-sm: 0.125rem; /* 2px  — default, sharp/precise */
+  --radius-md: 0.25rem; /* 4px  — buttons, cards */
+  --radius-lg: 0.5rem; /* 8px  — overlays, modals */
+  --radius-pill: 0.75rem; /* 12px — chips, tags only */
+
+  /* shadow */
+  --shadow-float: 0 0 40px 0 rgba(47, 51, 49, 0.04); /* Floating menus */
+  --shadow-overlay: 0 4px 24px 0 rgba(47, 51, 49, 0.08); /* Modals/drawers */
+  /* Shadow: ambient only (on-surface at 4%) */
+  /* --shadow-ambient: 0 20px 40px 0
+    color-mix(in oklab, var(--color-on-surface) 4%, transparent); */
+
+  /* transition */
+  --duration-fast: 150ms;
+  --duration-base: 300ms;
+  --duration-slow: 700ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+}
