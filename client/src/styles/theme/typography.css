@@ -1,0 +1,41 @@
+@theme {
+  /* font family */
+  --font-display: "Lora", "Noto Serif", Georgia, serif;
+  --font-headline: "Noto Serif", "Lora", Georgia, serif;
+  --font-body: "Inter", system-ui, -apple-system, sans-serif;
+  --font-label: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+
+  /* Type Scale — Named semantic steps */
+  --text-display-lg: 3.5rem; /* 56px — masthead headlines */
+  --text-display-md: 3rem; /* 48px — hero titles */
+  --text-display-sm: 2.25rem; /* 36px — section openers */
+
+  --text-headline-lg: 1.875rem; /* 30px — card headers */
+  --text-headline-md: 1.5rem; /* 24px — sub-section titles */
+  --text-headline-sm: 1.25rem; /* 20px — component titles */
+
+  --text-title-lg: 1.125rem; /* 18px — emphasized body */
+  --text-title-md: 1rem; /* 16px — standard title */
+  --text-title-sm: 0.875rem; /* 14px — compact title */
+
+  --text-body-lg: 1.125rem; /* 18px — editorial body */
+  --text-body-md: 0.875rem; /* 14px — workhorse body */
+  --text-body-sm: 0.75rem; /* 12px — captions */
+
+  --text-label-lg: 0.875rem; /* 14px */
+  --text-label-md: 0.75rem; /* 12px — metadata, tags */
+  --text-label-sm: 0.625rem; /* 10px — micro-labels */
+
+  /* Letter Spacing */
+  --tracking-display: -0.02em; /* Negative — premium headline authority */
+  --tracking-label: 0.05em; /* Positive — all-caps label discipline */
+  --tracking-micro: 0.2em; /* Wide — micro-category labels */
+
+  /* Line Heights */
+  --leading-display: 1.1; /* Tight — headlines */
+  --leading-headline: 1.25; /* Compact — card titles */
+  --leading-body: 1.6; /* Generous — scholarly reading */
+  --leading-editorial: 1.8; /* Wide — long-form essays */
+  --leading-label: 1.4; /* Utility — UI labels */
+}
