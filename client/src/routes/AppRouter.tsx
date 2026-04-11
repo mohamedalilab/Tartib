@@ -5,13 +5,13 @@ import { createBrowserRouter } from "react-router";
 // Lazy-loaded Pages:
 // Each route is code-split into its own chunk
 // Layouts
-const MainLayout = lazy(() => import("@/shared/layouts/main-layout"));
+const MainLayout = lazy(() => import("@/layouts/main-layout"));
 
 // Public pages
 const Landing = lazy(() => import("@/pages/Landing"));
 const Methods = lazy(() => import("@/pages/Methods"));
 const Philosophy = lazy(() => import("@/pages/Philosophy"));
-const Documents = lazy(() => import("@/pages/Documents"));
+const Documentations = lazy(() => import("@/pages/Documentations"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 
 // App pages
@@ -34,8 +34,8 @@ const AppRouter = createBrowserRouter([
         element: <Methods />,
       },
       {
-        path: "/Documents",
-        element: <Documents />,
+        path: "/Documentations",
+        element: <Documentations />,
       },
       {
         path: "/philosophy",
