@@ -3,13 +3,13 @@
 @import "./typography.css";
 @import "./spacing.css";
 
-
 @theme {
   --radius-none: 0rem;
   --radius-sm: 0.125rem; /* 2px  — default, sharp/precise */
   --radius-md: 0.25rem; /* 4px  — buttons, cards */
   --radius-lg: 0.5rem; /* 8px  — overlays, modals */
   --radius-pill: 0.75rem; /* 12px — chips, tags only */
+  --radius-circle: 99999px;
 
   /* shadow */
   --shadow-float: 0 0 40px 0 rgba(47, 51, 49, 0.04); /* Floating menus */

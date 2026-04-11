@@ -1,0 +1,76 @@
+@layer components {
+  /**
+   * @section BUTTONS - System-wide button.
+   */
+
+  /* Base: Shared layout and interaction logic */
+  .btn {
+    @apply inline-flex-center gap-2 text-label-md;
+    @apply px-6 py-2.5 rounded-md whitespace-nowrap select-none;
+    transition: opacity var(--duration-fast) var(--ease-standard),
+      transform var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard);
+
+    &:active {
+      transform: scale(0.98);
+    }
+    &:disabled {
+      @apply opacity-40 cursor-not-allowed pointer-events-none;
+    }
+  }
+
+  /* Variants: Backgrounds and Colors */
+  .btn-primary {
+    @apply btn text-on-primary;
+    background: linear-gradient(
+      135deg,
+      var(--color-primary) 0%,
+      var(--color-primary-dim) 100%
+    );
+  }
+
+  .btn-accent {
+    @apply btn bg-accent text-color-accent-on;
+  }
+  
+  .btn-inverse {
+    @apply btn bg-inverse-on-surface text-inverse-on-surface;
+  }
+
+  /* States: Unified hover for solid buttons */
+  .btn-primary,
+  .btn-accent,
+  .btn-inverse {
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+
+  /* Hierarchy: Secondary and Ghost */
+  .btn-secondary {
+    @apply btn bg-transparent text-ink border border-[color-mix(in_srgb,var(--border)_40%,transparent)];
+    &:hover {
+      background-color: var(--surface-mid);
+    }
+  }
+
+  .btn-ghost {
+    @apply btn bg-transparent px-0 rounded-none border-b border-b-transparent;
+    color: var(--ink);
+    &:hover {
+      @apply text-accent border-b-accent;
+    }
+  }
+
+  /* Specialized: Icons and Shapes */
+  .btn-icon {
+    @apply btn p-2.5 rounded-md bg-transparent text-on-surface-muted;
+    &:hover {
+      @apply text-on-surface bg-surface-mid;
+    }
+  }
+
+  .btn-pill {
+    @apply btn-accent rounded-full;
+  }
+}

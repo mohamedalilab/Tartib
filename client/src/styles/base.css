@@ -101,17 +101,17 @@
     margin: 0;
   }
 
-  :where(a) {
-    color: inherit;
-    text-decoration: none;
-  }
   a,
   button,
   input,
   textarea,
   select,
   option {
+    color: inherit;
     cursor: pointer;
+    text-decoration: none;
+    border: none;
+    outline: none;
     transition-property: color, background-color, border-color, opacity;
     transition-duration: var(--duration-fast);
     transition-timing-function: var(--ease-standard);
@@ -120,19 +120,8 @@
     }
   }
 
-  input,
-  textarea,
-  button {
-    @apply outline-none;
-  }
-
   textarea {
     resize: none;
-  }
-
-  :where(button, input, textarea, select) {
-    font: inherit;
-    color: inherit;
   }
 
   img,
