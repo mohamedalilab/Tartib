@@ -1,4 +1,4 @@
-export interface link {
+export interface LinkInfoProps {
   label: string;
-  to: string;
+  path: string;
 }
