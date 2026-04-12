@@ -74,6 +74,7 @@
   /* OUTLINE / BORDER TOKENS */
   --color-outline: #777c79;
   --color-outline-variant: #afb3b0;
+  --color-outline-neutral: #e6e4dd;
 }
 
 /* Tell Tailwind to trigger "dark" variants based on a class */

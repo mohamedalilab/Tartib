@@ -5,8 +5,8 @@
 
   /* Base: Shared layout and interaction logic */
   .btn {
-    @apply inline-flex-center gap-2 text-label-md;
-    @apply px-6 py-2.5 rounded-md whitespace-nowrap select-none;
+    @apply inline-flex items-center justify-center gap-2 text-label-md;
+    @apply px-5 py-2 rounded-pill whitespace-nowrap select-none;
     transition: opacity var(--duration-fast) var(--ease-standard),
       transform var(--duration-fast) var(--ease-standard),
       background-color var(--duration-fast) var(--ease-standard);
@@ -14,14 +14,19 @@
     &:active {
       transform: scale(0.98);
     }
+
     &:disabled {
       @apply opacity-40 cursor-not-allowed pointer-events-none;
+    }
+
+    &.pill {
+      @apply rounded-full;
     }
   }
 
   /* Variants: Backgrounds and Colors */
   .btn-primary {
-    @apply btn text-on-primary;
+    @apply text-on-primary;
     background: linear-gradient(
       135deg,
       var(--color-primary) 0%,
@@ -30,11 +35,11 @@
   }
 
   .btn-accent {
-    @apply btn bg-accent text-color-accent-on;
+    @apply bg-accent text-accent-on;
   }
-  
+
   .btn-inverse {
-    @apply btn bg-inverse-on-surface text-inverse-on-surface;
+    @apply bg-inverse-on-surface text-inverse-on-surface;
   }
 
   /* States: Unified hover for solid buttons */
@@ -48,15 +53,14 @@
 
   /* Hierarchy: Secondary and Ghost */
   .btn-secondary {
-    @apply btn bg-transparent text-ink border border-[color-mix(in_srgb,var(--border)_40%,transparent)];
+    @apply bg-transparent text-on-secondary;
     &:hover {
       background-color: var(--surface-mid);
     }
   }
 
   .btn-ghost {
-    @apply btn bg-transparent px-0 rounded-none border-b border-b-transparent;
-    color: var(--ink);
+    @apply bg-transparent px-0 rounded-none border-b border-b-transparent;
     &:hover {
       @apply text-accent border-b-accent;
     }
@@ -64,13 +68,13 @@
 
   /* Specialized: Icons and Shapes */
   .btn-icon {
-    @apply btn p-2.5 rounded-md bg-transparent text-on-surface-muted;
+    @apply p-2.5 rounded-md bg-transparent text-on-surface;
     &:hover {
-      @apply text-on-surface bg-surface-mid;
+      @apply text-on-surface bg-surface-dim;
     }
   }
 
   .btn-pill {
-    @apply btn-accent rounded-full;
+    @apply bg-accent rounded-full;
   }
 }
