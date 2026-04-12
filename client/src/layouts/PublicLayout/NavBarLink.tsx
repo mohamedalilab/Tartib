@@ -5,9 +5,10 @@ import { twMerge } from "tailwind-merge";
 interface NavBarLinkProps {
   label: string;
   path: string;
+  callback?: () => void;
 }
 
-function NavBarLink({ label, path }: NavBarLinkProps) {
+function NavBarLink({ label, path, callback }: NavBarLinkProps) {
   return (
     <NavLink
       className={({ isActive }) =>
@@ -17,6 +18,7 @@ function NavBarLink({ label, path }: NavBarLinkProps) {
         )
       }
       to={path}
+      onClick={callback}
     >
       {label || "link"}
     </NavLink>
