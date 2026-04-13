@@ -6,7 +6,7 @@ interface OverlayProps {
 function Overlay({ isOpen, callback }: OverlayProps) {
   if (!isOpen) return null;
 
-  return <div className="fixed inset-0 bg-black/20 z-40" onClick={callback} />;
+  return <div className="fixed inset-0 top-16 bg-black/20" onClick={callback} />;
 }
 
 export default Overlay;

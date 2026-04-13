@@ -1,4 +1,4 @@
-@layer utilites {
+@layer components {
   /* Display — Lora, masthead authority */
   .text-display-lg,
   .text-display-md,
@@ -13,6 +13,13 @@
     @apply font-display font-medium leading-headline;
   }
 
+  /* Headline — structural section titles */
+  .text-title-lg,
+  .text-tile-md,
+  .text-title-sm {
+    @apply font-sans font-semibold leading-headline;
+  }
+
   /* Body — Inter, functional */
   .text-body-lg,
   .text-body-md,
@@ -24,7 +31,7 @@
   .text-label-lg,
   .text-label-md,
   .text-label-sm {
-    @apply font-label font-semibold uppercase tracking-label leading-body;
+    @apply font-label font-semibold tracking-label leading-body;
   }
 
   /* Editorial long-form body — Lora, generous leading */

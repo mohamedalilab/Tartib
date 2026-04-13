@@ -13,7 +13,7 @@ function MenuToggleBtn({ isOpen, callback }: MenuToggleBtnProps) {
       aria-label="Toggle menu"
       aria-expanded={isOpen}
     >
-      {isOpen ? <X className="sm:size-9" /> : <Menu className="sm:size-9" />}
+      {isOpen ? <X /> : <Menu />}
     </button>
   );
 }

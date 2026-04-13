@@ -1,4 +1,4 @@
-@layer components {  
+@layer components {
   /* containers components */
   .layout-container {
     width: 100%;
@@ -8,28 +8,28 @@
     @media (width >= theme(--breakpoint-md)) {
       padding-inline: var(--spacing-12);
     }
-    
-    /* no max-width, used for hero sections */
-    &.is-full {
-      max-width: none;
-    }
-    
-    /* Page wrapper — centers content */
-    &.is-page {
-      max-width: var(--width-layout);
-    }
-    
-    /* Narrow prose container */
-    &.is-prose {
-      max-width: var(--width-content);
-    }
+  }
+
+  /* no max-width, used for hero sections */
+  .max-width-full {
+    max-width: none;
+  }
+
+  /* Page wrapper — centers content */
+  .max-width-page {
+    max-width: var(--width-layout);
+  }
+
+  /* Narrow prose container */
+  .max-width-prose {
+    max-width: var(--width-content);
   }
 
   /* grid helpers */
   .grid-system {
     display: grid;
     gap: var(--spacing-6);
-    
+
     /* Standard 12-column layout grid */
     &.grid-layout {
       grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -39,7 +39,7 @@
     &.grid-bento {
       grid-template-columns: 1fr;
     }
-    
+
     &.grid-auto {
       grid-template-columns: repeat(auto-fit, minmax(var(--grid-col-md), 1fr));
     }
@@ -57,11 +57,11 @@
   .surface-base {
     @apply bg-surface;
   }
-  
+
   .surface-low {
     @apply bg-surface-container-low;
   }
-  
+
   .surface-mid {
     @apply bg-surface-container;
   }
@@ -69,7 +69,7 @@
   .surface-high {
     @apply bg-surface-container-high;
   }
-  
+
   /* Dark mode inverse — for the dark editorial footer/header */
   .surface-inverse {
     @apply bg-inverse-surface text-inverse-on-surface;

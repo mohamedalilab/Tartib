@@ -5,9 +5,9 @@ import Footer from "./Footer";
 
 function MainLayout() {
   return (
-    <div className="flex flex-col h-screen overflow-hidden relative">
+    <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-1 scroll-smooth">
+      <main className="flex-1 py-16 scroll-smooth">
         <Suspense fallback={<h2>loading....</h2>}>
           <Outlet />
         </Suspense>
