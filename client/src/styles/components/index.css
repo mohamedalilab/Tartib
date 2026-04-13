@@ -1,3 +1,9 @@
 @import "./layout.css";
 @import "./typography.css";
 @import "./buttons.css";
+
+@layer components {
+  .card-base {
+    @apply flex flex-col justify-between bg-surface-container rounded-lg relative overflow-hidden;
+  }
+}

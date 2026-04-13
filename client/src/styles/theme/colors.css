@@ -83,6 +83,7 @@
 .dark {
   --color-background: #1b1b18;
   --color-surface: #1b1b18;
+  --color-surface-container-lowest: #0d0d0c;
   --color-surface-container-low: #1b1b18;
   --color-surface-container: #252525;
   --color-surface-container-high: #252525;
