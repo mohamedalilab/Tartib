@@ -21,7 +21,7 @@ function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-100 surface-low w-full md:h-20 h-16 md:py-4 py-2.5 md:px-4 border-b border-neutral-300">
+    <header className="sticky top-0 z-100 surface-low w-full md:h-20 h-16 md:py-4 py-2.5 md:px-4">
       <div className="layout-container max-width-page flex-between gap-5 z-80">
         <Link
           className="text-headline-md italic text-primary"
