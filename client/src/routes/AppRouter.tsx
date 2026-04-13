@@ -8,7 +8,7 @@ import { createBrowserRouter } from "react-router";
 const MainLayout = lazy(() => import("@/layouts/PublicLayout"));
 
 // Public pages
-const Landing = lazy(() => import("@/pages/Landing"));
+const Landing = lazy(() => import("@/pages/landing"));
 const Methods = lazy(() => import("@/pages/Methods"));
 const Philosophy = lazy(() => import("@/pages/Philosophy"));
 const Documentation = lazy(() => import("@/pages/Documentation"));
