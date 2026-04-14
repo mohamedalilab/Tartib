@@ -57,5 +57,4 @@ export const BentoItem = ({
     </div>
   );
 };
-// ربط المكونات ببعضها (Compound Pattern)
 BentoGrid.Item = BentoItem;

@@ -2,6 +2,7 @@ import Hero from "./Hero";
 import ProductivityBento from "./productivityBento";
 import Framework from "./Framework";
 import Workflow from "./Workflow";
+import Philosophy from "./Philosophy";
 
 function Landing() {
   return (
@@ -10,6 +11,7 @@ function Landing() {
       <ProductivityBento />
       <Framework />
       <Workflow />
+      <Philosophy />
     </div>
   );
 }

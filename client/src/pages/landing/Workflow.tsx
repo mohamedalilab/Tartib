@@ -45,7 +45,7 @@ const WorkflowStep = ({
     </div>
 
     <h4 className="text-on-surface mb-2">{title}</h4>
-    <p className="text-body-md text-on-surface-variant max-w-60">
+    <p className="text-body-lg text-on-surface-variant/40 max-w-60">
       {description}
     </p>
   </div>
