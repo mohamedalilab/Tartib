@@ -7,9 +7,14 @@ import MobileMenu from "./MobileMenu";
 import Overlay from "@/shared/components/Overlay";
 import { ThemeToggleBtn } from "@/features/theme/components/ThemeToggleBtn";
 
+import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
+
+const MOBILE_MEDIA = "(max-width: 768px)";
+
 function Header() {
   // mobile menu display state
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
+  const isMobile = useMediaQuery(MOBILE_MEDIA);
 
   // handle toggle mobile menu display
   const toggleDropMenu = () => {
@@ -20,6 +25,14 @@ function Header() {
   const closeMenu = () => {
     setIsOpen(false);
   };
+
+  // auto close mobile menue after resizing to desktop
+  React.useEffect(() => {
+    console.log("55")
+    if (!isMobile && isOpen) {
+      setIsOpen(false);
+    }
+  }, [isMobile, isOpen]);
 
   return (
     <header className="sticky top-0 z-100 surface-low w-full md:h-20 h-16 md:py-4 py-2.5 md:px-4">
@@ -41,8 +54,8 @@ function Header() {
         </nav>
         <MenuToggleBtn isOpen={isOpen} callback={toggleDropMenu} />
       </div>
-      {isOpen && <Overlay isOpen={isOpen} callback={closeMenu} />}
       {isOpen && <MobileMenu closeMenu={closeMenu} />}
+      {isOpen && isMobile && <Overlay isOpen={isOpen} onClose={closeMenu} />}
     </header>
   );
 }

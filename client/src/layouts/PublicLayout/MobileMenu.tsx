@@ -9,7 +9,7 @@ interface MobileMenuProps {
 
 function MobileMenu({ closeMenu }: MobileMenuProps) {
   return (
-    <div className="md:hidden absolute top-full left-0 w-full surface-low shadow-lg duration-150 animate-dropdown-slide">
+    <div className="md:hidden absolute top-full left-0 w-full z-40 surface-low shadow-lg duration-150 animate-dropdown-slide">
       <nav className="p-4">
         {PUBLIC_LINKS.map((link) => (
             <MenuLink

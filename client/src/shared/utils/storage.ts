@@ -38,7 +38,12 @@ export function getStorage<T>(key: string): T | null {
         const item = window.localStorage.getItem(key);
         if (!item) return null;
 
-        return JSON.parse(item) as T;
+        try {
+            return JSON.parse(item) as T;
+        } catch {
+            // Support plain strings like "dark"/"light" without forcing JSON.
+            return item as unknown as T;
+        }
 
     } catch (error) {
         console.error("getStorage error:", error);
