@@ -12,7 +12,7 @@ function NavBarLink({ label, path, callback }: NavBarLinkProps) {
     <NavLink
       className={({ isActive }) =>
         clsx(
-          "text-label-lg hover:text-accent uppercase transition-all duration-200",
+          "text-label-md hover:text-accent uppercase transition-all duration-200 border-b border-transparent hover:border-accent",
           twMerge("text-on-surface-variant", isActive && "text-accent")
         )
       }

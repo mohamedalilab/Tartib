@@ -1,5 +1,5 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import themeReducer from "../features/themeSlice/themeSlice";
+import themeReducer from "../features/theme/themeSlice";
 
 /**
 *  @desc Turns an object whose values are different reducer functions, into a single reducer function.

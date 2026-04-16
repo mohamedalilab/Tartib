@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { rootReducer } from "./rootReducer";
-import themeListener from "@/features/themeSlice/themeListener";
+import themeListener from "@/features/theme/themeListener";
 
 export const store = configureStore({
   reducer: rootReducer,

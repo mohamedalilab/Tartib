@@ -5,6 +5,7 @@ import { PUBLIC_LINKS } from "@/shared/constants/navigation";
 import MenuToggleBtn from "@/shared/components/MenuToggleBtn";
 import MobileMenu from "./MobileMenu";
 import Overlay from "@/shared/components/Overlay";
+import { ThemeToggleBtn } from "@/features/theme/components/ThemeToggleBtn";
 
 function Header() {
   // mobile menu display state
@@ -23,10 +24,7 @@ function Header() {
   return (
     <header className="sticky top-0 z-100 surface-low w-full md:h-20 h-16 md:py-4 py-2.5 md:px-4">
       <div className="layout-container max-width-page flex-between gap-5 z-80">
-        <Link
-          className="text-headline-md italic text-primary"
-          to="/"
-        >
+        <Link className="text-headline-md italic text-primary" to="/">
           Tartib
         </Link>
         <nav className="hidden md:flex items-center gap-6">
@@ -35,10 +33,11 @@ function Header() {
           ))}
           <Link
             to="/sign-in"
-            className="btn btn-accent text-label-lg tracking-wider uppercase"
+            className="btn btn-accent text-label-md tracking-wider uppercase"
           >
             Enter Workspace
           </Link>
+          <ThemeToggleBtn />
         </nav>
         <MenuToggleBtn isOpen={isOpen} callback={toggleDropMenu} />
       </div>

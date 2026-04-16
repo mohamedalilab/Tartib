@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import { PUBLIC_LINKS } from "@/shared/constants/navigation";
-import NavBarLink from "./NavBarLink";
+import MenuLink from "./MenuLink";
+import { ThemeToggleBtn } from "@/features/theme/components/ThemeToggleBtn";
 
 interface MobileMenuProps {
   closeMenu: () => void;
@@ -9,23 +10,26 @@ interface MobileMenuProps {
 function MobileMenu({ closeMenu }: MobileMenuProps) {
   return (
     <div className="md:hidden absolute top-full left-0 w-full surface-low shadow-lg duration-150 animate-dropdown-slide">
-      <nav className="flex flex-col gap-4 p-4">
+      <nav className="p-4">
         {PUBLIC_LINKS.map((link) => (
-          <NavBarLink
-            key={link.path}
-            label={link.label}
-            path={link.path}
-            callback={closeMenu}
-          />
+            <MenuLink
+              key={link.path}
+              label={link.label}
+              path={link.path}
+              callback={closeMenu}
+            />
         ))}
 
-        <Link
-          to="/sign-in"
-          className="btn btn-accent text-label-lg tracking-wider uppercase"
-          onClick={closeMenu}
-        >
-          Enter Workspace
-        </Link>
+        <div className="menu-btns flex-between gap-4 mt-5">
+          <Link
+            to="/sign-in"
+            className="btn btn-accent text-label-lg tracking-wider uppercase flex-1"
+            onClick={closeMenu}
+          >
+            Enter Workspace
+          </Link>
+          <ThemeToggleBtn />
+        </div>
       </nav>
     </div>
   );

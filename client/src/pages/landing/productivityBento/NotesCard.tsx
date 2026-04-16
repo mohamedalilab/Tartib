@@ -25,13 +25,10 @@ function NotesCard() {
                 style={{ width: `${width}%` }}
                 className="h-1.5 bg-primary/20 rounded-full overflow-hidden"
               >
-                <div className="h-full bg-primary/40 group-hover:bg-primary transition-all duration-1000" />
               </div>
             ))}
           </div>
-
-          {/* Main Editor Preview */}
-          <div className="flex-1 h-44 bg-surface-container-low rounded-lg border border-outline/10 p-5 transition-all duration-500 group-hover:border-primary/30">
+          <div className="flex-1 h-44 bg-surface-container-low rounded-lg border border-outline/10 p-5 group-hover:border-primary/30">
             <div className="h-3 w-24 bg-primary/10 rounded-md mb-6" />
           </div>
         </div>
