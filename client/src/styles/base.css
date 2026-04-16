@@ -18,11 +18,11 @@
   }
 
   body {
-    margin: 0;
     min-height: 100dvh;
     background: var(--color-surface);
     color: var(--color-on-surface);
     font-family: var(--font-body);
+    margin: 0;
     line-height: var(--leading-body);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -95,23 +95,25 @@
   }
 
   ul,
-  ol {
+  ol,
+  li {
     list-style: none;
+    list-style-type: none;
     padding: 0;
     margin: 0;
   }
 
-  :where(a) {
-    color: inherit;
-    text-decoration: none;
-  }
   a,
   button,
   input,
   textarea,
   select,
   option {
+    color: inherit;
     cursor: pointer;
+    text-decoration: none;
+    border: none;
+    outline: none;
     transition-property: color, background-color, border-color, opacity;
     transition-duration: var(--duration-fast);
     transition-timing-function: var(--ease-standard);
@@ -120,19 +122,8 @@
     }
   }
 
-  input,
-  textarea,
-  button {
-    @apply outline-none;
-  }
-
   textarea {
     resize: none;
-  }
-
-  :where(button, input, textarea, select) {
-    font: inherit;
-    color: inherit;
   }
 
   img,

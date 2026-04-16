@@ -1,5 +1,37 @@
-@layer components {
+@layer utilities {
   .scrollbar-hide {
     scrollbar-width: none;
+  }
+  .border-ghost {
+    border: 1px solid color-mix(in srgb, var(--border) 15%, transparent);
+  }
+
+  .border-ghost-accent {
+    border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  }
+
+  .img-cover {
+    @apply w-full h-full object-cover;
+  }
+
+  .img-hover-zoom {
+    @apply transition-transform duration-700 group-hover:scale-105;
+  }
+
+  .overlay-gradient-bottom {
+    position: absolute;
+    inset: 0;
+
+    background: linear-gradient(
+      to top,
+      var(--color-surface) 0%,
+      rgba(0, 0, 0, 0) 40%,
+      transparent 100%
+    );
+  }
+
+  .bg-glow-primary {
+    @apply absolute w-64 h-64 bg-primary/8 rounded-full pointer-events-none;
+    filter: blur(100px);
   }
 }
