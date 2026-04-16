@@ -2,7 +2,6 @@ import { CONTACT_LINKS, PUBLIC_LINKS } from "@/shared/constants/navigation";
 import FooterLink from "./FooterLink";
 
 function Footer() {
-
   // get current year
   const currentYear = new Date().getFullYear();
 
@@ -26,7 +25,11 @@ function Footer() {
             </h5>
             <ul className="space-y-2 capitalize">
               {PUBLIC_LINKS.map((link) => (
-                <FooterLink label={link.label} path={link.path} />
+                <FooterLink
+                  key={link.label}
+                  label={link.label}
+                  path={link.path}
+                />
               ))}
             </ul>
           </div>
@@ -36,7 +39,11 @@ function Footer() {
             </h5>
             <ul className="space-y-2 capitalize">
               {CONTACT_LINKS.map((link) => (
-                <FooterLink label={link.label} path={link.path} />
+                <FooterLink
+                  key={link.label}
+                  label={link.label}
+                  path={link.path}
+                />
               ))}
             </ul>
           </div>
