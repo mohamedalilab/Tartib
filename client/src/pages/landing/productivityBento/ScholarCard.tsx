@@ -1,6 +1,6 @@
 function ScholarCard() {
   return (
-    <div className="col-span-12 md:col-span-4 card-base border-ghost relative overflow-hidden h-80 group">
+    <div className="col-span-12 md:col-span-4 card-base h-80 group">
       <img
         alt="Abstract Scholar Visual"
         className="img-cover opacity-40 img-hover-zoom"

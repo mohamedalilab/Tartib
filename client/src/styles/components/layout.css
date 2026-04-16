@@ -6,13 +6,13 @@
     padding-inline: var(--spacing-6);
     margin-inline: auto;
     @media (width >= theme(--breakpoint-md)) {
-      padding-inline: var(--spacing-12);
+      padding-inline: var(--spacing-10);
     }
   }
 
   /* no max-width, used for hero sections */
   .max-width-full {
-    max-width: none;
+    max-width: var(--width-wide);
   }
 
   /* Page wrapper — centers content */

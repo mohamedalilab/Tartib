@@ -7,6 +7,7 @@
   --font-mono: "JetBrains Mono", "Fira Code", "Consolas", monospace;
 
   /* Type Scale — Named semantic steps */
+  --text-display-xl: 4rem; /* 64px */
   --text-display-lg: 3.5rem; /* 56px — masthead headlines */
   --text-display-md: 3rem; /* 48px — hero titles */
   --text-display-sm: 2.25rem; /* 36px — section openers */
@@ -19,6 +20,7 @@
   --text-title-md: 1rem; /* 16px — standard title */
   --text-title-sm: 0.875rem; /* 14px — compact title */
 
+  --text-body-xl: 1.25rem; /* 20px*/
   --text-body-lg: 1.125rem; /* 18px — editorial body */
   --text-body-md: 0.875rem; /* 14px — workhorse body */
   --text-body-sm: 0.75rem; /* 12px — captions */

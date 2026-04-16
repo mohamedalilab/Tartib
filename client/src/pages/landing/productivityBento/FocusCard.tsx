@@ -1,6 +1,6 @@
 function FocusCard() {
   return (
-    <div className="col-span-12 md:col-span-8 relative card-base border-ghost h-80 group">
+    <div className="col-span-12 md:col-span-8 card-base h-80 group">
       <img
         alt="Minimalist workspace"
         className="img-cover opacity-80 img-hover-zoom"

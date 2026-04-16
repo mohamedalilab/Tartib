@@ -4,6 +4,12 @@
 
 @layer components {
   .card-base {
-    @apply flex flex-col justify-between bg-surface-container rounded-lg relative overflow-hidden;
+    @apply flex flex-col justify-between bg-surface-container relative overflow-hidden;
+    &.is-rounded {
+      @apply rounded-lg;
+    }
+    &.is-border {
+      @apply border border-outline-neutral;
+    }
   }
 }
