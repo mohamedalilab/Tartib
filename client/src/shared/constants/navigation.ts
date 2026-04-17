@@ -2,7 +2,7 @@ import type { LinkInfoProps } from "@/types";
 
 export const PUBLIC_LINKS: LinkInfoProps[] = [
   { label: "methods", path: "methods" },
-  { label: "philosophy", path: "philosophy" },
+  { label: "manifesto", path: "manifesto" },
   { label: "documentation", path: "documentation" },
 ];
 
