@@ -10,7 +10,7 @@ function Footer() {
       <div className="layout-container max-width-page grid grid-cols-1 md:grid-cols-2 gap-10">
         <div className="space-y-6">
           <div className="text-headline-md text-primary italic">Tartib</div>
-          <p className="text-body-md text-secondary">
+          <p className="text-body-md text-secondary max-w-sm">
             A Scholar's Productivity Tool. Crafting space for deep thought and
             structured output in an age of distraction.
           </p>

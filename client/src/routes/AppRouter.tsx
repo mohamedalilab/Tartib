@@ -9,7 +9,7 @@ const MainLayout = lazy(() => import("@/layouts/PublicLayout"));
 
 // Public pages
 const Landing = lazy(() => import("@/pages/landing"));
-const Philosophy = lazy(() => import("@/pages/Philosophy"));
+const Manifesto = lazy(() => import("@/pages/Manifesto"));
 const Methods = lazy(() => import("@/pages/methods"));
 const Documentation = lazy(() => import("@/pages/Documentation"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
@@ -38,8 +38,8 @@ const AppRouter = createBrowserRouter([
         element: <Documentation />,
       },
       {
-        path: "/philosophy",
-        element: <Philosophy />,
+        path: "/Manifesto",
+        element: <Manifesto />,
       },
     ],
   },
