@@ -40,6 +40,7 @@ const AppRouter = createBrowserRouter([
         path: "/Manifesto",
         element: <Manifesto />,
       },
+      // 404 fallback
       {
         path: "*",
         element: <NotFound />,
@@ -51,7 +52,6 @@ const AppRouter = createBrowserRouter([
 
   // App routes (sidebar layout)
 
-  // 404 fallback
 ]);
 
 export default AppRouter;
