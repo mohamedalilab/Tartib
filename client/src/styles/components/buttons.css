@@ -6,7 +6,7 @@
   /* Base: Shared layout and interaction logic */
   .btn {
     @apply inline-flex items-center justify-center gap-2 text-label-md;
-    @apply px-5 py-2 rounded-pill whitespace-nowrap select-none border border-outline-neutral;
+    @apply px-5 py-2 whitespace-nowrap select-none border border-outline-neutral;
     transition: opacity var(--duration-fast) var(--ease-standard),
       transform var(--duration-fast) var(--ease-standard),
       background-color var(--duration-fast) var(--ease-standard);
@@ -21,6 +21,10 @@
 
     &.pill {
       @apply rounded-full;
+    }
+    
+    &.is-rounded {
+      @apply rounded-md;
     }
   }
 

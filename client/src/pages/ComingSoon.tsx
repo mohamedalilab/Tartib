@@ -16,7 +16,7 @@ function ComingSoon() {
       <div className="space-y-8">
         <div className="space-y-6 text-on-surface">
           <h1 className="text-display-md font-normal">The Next Chapter.</h1>
-          <p className="text-body-lg text-on-surface-variant max-w-md">
+          <p className="text-body-lg text-on-surface-variant max-w-md font-light">
             We are currently indexing new features for the Scholar's Workspace.
             This fragment of the ecosystem will be available soon.
           </p>
