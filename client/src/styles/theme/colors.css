@@ -97,8 +97,10 @@
   --color-primary: #ebe9e4;
   --color-on-primary: #1b1b18;
   --color-primary-container: #252525;
-  --color-on-primary-container: #ebe9e4;
+  /* --color-on-primary-container: #ebe9e4; */
 
   --color-outline: #333330;
   --color-outline-variant: #333330;
+  --color-outline-neutral: #44443f;
+  /* --color-outline-neutral: #2a2a28; */
 }

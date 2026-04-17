@@ -1,6 +1,6 @@
 function NotesCard() {
   return (
-    <div className="col-span-12 md:col-span-7 card-base border-ghost p-10 group">
+    <div className="col-span-12 md:col-span-7 card-base p-10 group">
       <div className="bg-glow-primary top-0 right-0 transition-opacity opacity-0 group-hover:opacity-100" />
 
       <div className="relative z-10">

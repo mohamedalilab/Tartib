@@ -69,7 +69,7 @@ export default function PomodoroCard() {
     .padStart(2, "0")}`;
 
   return (
-    <div className="col-span-12 md:col-span-5 bg-surface-container-high border-ghost rounded-lg p-10 flex flex-col justify-between h-125">
+    <div className="col-span-12 md:col-span-5 card-base bg-surface-container-high p-10 h-125">
       <div>
         <span className="text-label-md uppercase text-on-surface-variant mb-4 block">
           Temporal Discipline
