@@ -1,9 +1,6 @@
-import { useGoBack } from "@/shared/hooks/useGoBack";
-import { ArrowLeft } from "lucide-react";
+import BackBtn from "@/shared/components/BackBtn";
 
 function ComingSoon() {
-  const goBack = useGoBack();
-
   return (
     <div className="layout-container max-width-page flex-center flex-col gap-12 md:flex-row">
       <div className="relative group">
@@ -24,16 +21,7 @@ function ComingSoon() {
             This fragment of the ecosystem will be available soon.
           </p>
         </div>
-        <div>
-          <button
-            type="button"
-            onClick={goBack}
-            className="btn btn-primary bg-primary uppercase rounded-none tracking-widest transition-colors group"
-          >
-            <ArrowLeft className="group-hover:-translate-x-1 transition-transform" />
-            [Return to Current Study]
-          </button>
-        </div>
+        <BackBtn label="take me back" />
       </div>
     </div>
   );
