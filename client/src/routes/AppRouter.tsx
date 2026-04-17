@@ -11,11 +11,10 @@ const MainLayout = lazy(() => import("@/layouts/PublicLayout"));
 const Landing = lazy(() => import("@/pages/landing"));
 const Manifesto = lazy(() => import("@/pages/Manifesto"));
 const Methods = lazy(() => import("@/pages/methods"));
-const Documentation = lazy(() => import("@/pages/Documentation"));
+const ComingSoon = lazy(() => import("@/pages/ComingSoon"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 
 // App pages
-
 
 // ── Router ──────────────────────────────────────────
 
@@ -35,7 +34,7 @@ const AppRouter = createBrowserRouter([
       },
       {
         path: "/documentation",
-        element: <Documentation />,
+        element: <ComingSoon />,
       },
       {
         path: "/Manifesto",
