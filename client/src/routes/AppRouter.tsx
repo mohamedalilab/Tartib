@@ -10,7 +10,7 @@ const MainLayout = lazy(() => import("@/layouts/PublicLayout"));
 // Public pages
 const Landing = lazy(() => import("@/pages/landing"));
 const Manifesto = lazy(() => import("@/pages/Manifesto"));
-const Methods = lazy(() => import("@/pages/methods"));
+const Methods = lazy(() => import("@/pages/methodsPage"));
 const ComingSoon = lazy(() => import("@/pages/ComingSoon"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 
