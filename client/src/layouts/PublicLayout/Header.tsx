@@ -28,7 +28,6 @@ function Header() {
 
   // auto close mobile menue after resizing to desktop
   React.useEffect(() => {
-    console.log("55")
     if (!isMobile && isOpen) {
       setIsOpen(false);
     }

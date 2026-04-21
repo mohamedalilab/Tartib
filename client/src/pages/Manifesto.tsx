@@ -1,7 +1,7 @@
+import ManifestoImg from "@assets/images/manifesto.png";
 import { Link } from "react-router";
 
 function Manifesto() {
-  // < className="max-w-screen-2xl mx-auto px-12 lg:px-24">
   return (
     <div className="layout-container max-width-page">
       <section className="py-12 border-b border-outline-neutral">
@@ -48,10 +48,10 @@ function Manifesto() {
             </p>
             <div className="py-4">
               <img
-                alt="Library interior"
                 className="w-full h-100 object-cover grayscale opacity-90 brightness-105 hover:grayscale-0 hover:filter-none"
+                src={ManifestoImg}
+                alt="Library interior"
                 data-alt="Minimalist modern library with high ceilings, warm wooden shelves, soft natural light streaming through large windows, and a solitary wooden desk"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8oAVlgUBHxzKbUMMi2qOG4m2cFwRNAE8aDOsVzF-rCsNDRkALjNH9VmnPZAEPmGuwa5YL3PXXu36VHflNG4uPO0JiKp8LhQ4zCWVTf64U31_bG1ztJz_ZktyUZKLMD9gHYGWdAl1VeOTq4JwuJlzmSZ2IaTwBSvcWdICcSRgOMOH9AhlQv2gxLluMuu9Xnt8J45IMwPAMpUjRdqKA5aJFtvmo_NKmO7azqp4JcbzQrPad8CIvbbDDZelguaqLtR0jCyiccdg7sDyo"
               />
             </div>
             <p>

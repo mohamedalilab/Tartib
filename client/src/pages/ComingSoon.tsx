@@ -1,4 +1,5 @@
 import BackBtn from "@/shared/components/BackBtn";
+import ComingSoonImg from "@assets/images/coming-soon.png";
 
 function ComingSoon() {
   return (
@@ -6,10 +7,10 @@ function ComingSoon() {
       <div className="relative group">
         <div className="relative w-full aspect-square max-w-50 md:max-w-100 md:p-8 p-4 flex-center bg-gray-100">
           <img
-            alt="Minimalist thin-line quill graphic"
             className="sizefull object-contain grayscale opacity-80 mix-blend-multiply"
+            src={ComingSoonImg}
+            alt="Minimalist thin-line quill graphic"
             data-alt="A minimalist fine-line artistic drawing of a wooden quill pen resting on a thick sheet of handmade cream paper, soft studio lighting"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfkJt1u3kMg3tL-OUJcwRAletj8hPnQpknQFU1KzA0hSpcJNMqk2BS6zDL7z2r8uqyil1r0si06AjFtfewjScWtqQ7-AyzXT1DrVbRIR0RA81CtzPcJ1zHQC6B0yonPVC_I73i7Drd3ThYdkPZfyWMTqATts46n2gMCrK11MwDb07RO6Mep3vfw3XxwoWMxjQj8SipydOIq7tZ23CYYipgGEuQ58Vo0nynvDU-i-5qZSTGgI8zIcwlaK773ChvtNQLSI4MT4vqYKUg"
           />
         </div>
       </div>
