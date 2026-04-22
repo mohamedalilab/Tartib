@@ -1,5 +1,5 @@
 import { env } from "d:/dev/tartib/server/config/env.js";
-import { HEADERS } from "../constants/headers.js";
+import { HEADERS } from "../constants/index.js";
 
 // allowed origins include client and admin urls
 const allowedOrigins = [env.CLIENT_URL, env.ADMIN_URL];

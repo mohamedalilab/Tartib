@@ -6,8 +6,7 @@
  * @Usage throw new ApiError(404, "User not found");
  */
 
-import { HTTP_STATUS } from "../constants/httpStatus.js";
-
+import { HTTP_STATUS } from "../constants/index.js";
 
 // ApiError Class
 export class ApiError extends Error {

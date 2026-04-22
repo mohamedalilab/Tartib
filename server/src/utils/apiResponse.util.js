@@ -1,5 +1,4 @@
-import { MESSAGES } from "../constants/messages.js";
-import { HTTP_STATUS } from "../constants/httpStatus.js";
+import { MESSAGES, HTTP_STATUS } from "../constants/index.js";
 
 /**
  * Formats a standard 200 OK response.

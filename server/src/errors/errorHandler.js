@@ -13,11 +13,14 @@
  * @reminder help to handle errors if i forget handling it like JWT, Mongoose
  */
 
-import { HTTP_STATUS } from "../constants/httpStatus.js";
+import {
+  HTTP_STATUS,
+  MESSAGES,
+  JWT_ERRORS,
+  MONGOOSE_ERRORS,
+  MULTER_ERRORS,
+} from "../constants/index.js";
 import { env } from "../config/env.js";
-import { MESSAGES } from "../constants/messages.js";
-import { JWT_ERRORS, MONGOOSE_ERRORS, MULTER_ERRORS } from "../constants/errorTypes.js";
-
 
 export const errorHandler = (error, req, res, next) => {
   error.message = error.message || MESSAGES.ERROR.SERVER_ERROR;
@@ -58,14 +61,15 @@ export const errorHandler = (error, req, res, next) => {
     error.statusCode = HTTP_STATUS.UNAUTHORIZED;
     error.message = MESSAGES.AUTH.TOKEN_EXPIRED;
   }
-  
-// Multer: Unexpected field OR too many files
-if (error.code === MULTER_ERRORS.LIMIT_UNEXPECTED_FILE) {
-  error.statusCode = HTTP_STATUS.BAD_REQUEST;
-  error.message = error.field === "productImages" 
-    ? MESSAGES.UPLOAD.MAX_IMAGES 
-    : `Unexpected field: ${error.field}`;
-}
+
+  // Multer: Unexpected field OR too many files
+  if (error.code === MULTER_ERRORS.LIMIT_UNEXPECTED_FILE) {
+    error.statusCode = HTTP_STATUS.BAD_REQUEST;
+    error.message =
+      error.field === "productImages"
+        ? MESSAGES.UPLOAD.MAX_IMAGES
+        : `Unexpected field: ${error.field}`;
+  }
 
   res.status(error.statusCode).json({
     success: false,

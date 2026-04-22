@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { MESSAGES } from "../constants/messages.js";
+import { MESSAGES } from "../constants/index.js";
 
 /**
  * @description Establishes connection to MongoDB Atlas.

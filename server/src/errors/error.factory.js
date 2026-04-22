@@ -6,7 +6,7 @@
  * @Usage throw createNotFoundError("User not found");
  */
 
-import { HTTP_STATUS } from "../constants/httpStatus.js";
+import { HTTP_STATUS } from "../constants/index.js";
 import { ApiError } from "./apiError.js";
 
 // 400 — missing or invalid params
