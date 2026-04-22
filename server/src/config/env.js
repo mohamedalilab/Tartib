@@ -7,7 +7,7 @@ export const env = {
   NODE_ENV: process.env.NODE_ENV || "development",
   PORT: process.env.PORT || 4000,
   SHUTDOWN_TIMEOUT: parseInt(process.env.SHUTDOWN_TIMEOUT) || 15_000,
-  
+
   // Development flags
   isDevelopment: process.env.NODE_ENV === "development",
   isProduction: process.env.NODE_ENV === "production",
@@ -28,4 +28,14 @@ export const env = {
     SAME_SITE: process.env.COOKIE_SAME_SITE || "lax",
   },
 
+  // hashing
+  BCRYPT_SALT_ROUNDS: parseInt(process.env.BCRYPT_SALT_ROUNDS) || 10,
+
+  // JWT
+  JWT: {
+    SECRET_ACCESS: process.env.JWT_SECRET_ACCESS,
+    SECRET_REFRESH: process.env.JWT_SECRET_REFRESH,
+    ACCESS_EXPIRE: process.env.JWT_ACCESS_EXPIRE || "15m",
+    REFRESH_EXPIRE: process.env.JWT_REFRESH_EXPIRE || "7d",
+  },
 };
