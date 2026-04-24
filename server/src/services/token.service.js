@@ -4,7 +4,7 @@
  */
 
 import jwt from "jsonwebtoken"
-import { env } from "../config/env";
+import { env } from "../config/env.js";
 import { JWT_ERRORS, MESSAGES } from "../constants/index.js";
 
 // ─── Generate Tokens ──────────────────────────────────────────────────────────

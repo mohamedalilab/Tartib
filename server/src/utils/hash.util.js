@@ -5,7 +5,7 @@
  * - token generation & hashing (crypto)
  */
 
-import { env } from "../config/env";
+import { env } from "../config/env.js";
 import crypto from "crypto";
 import bcrypt from "bcrypt";
 
