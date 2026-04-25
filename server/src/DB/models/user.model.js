@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
-import { REGEX } from "../../utils/regex.util";
-import { MESSAGES } from "../../constants/index.js";
+import { REGEX } from "../../utils/regex.util.js";
+import { MESSAGES, USER_ROLES, USER_STATUS } from "../../constants/index.js";
+import { hashPassword } from "../../utils/hash.util.js";
 
 // USER SCHEMA
 const userSchema = new mongoose.Schema(
@@ -87,6 +88,8 @@ const userSchema = new mongoose.Schema(
       expiresAt: Date,
     },
 
+    passwordChangedAt: Date,
+
     twoFactor: {
       isEnabled: Boolean,
       secret: String,
@@ -108,8 +111,15 @@ const userSchema = new mongoose.Schema(
   { timestamps: true, collection: "users" }
 );
 
+// hash password in the schema before saving
+userSchema.pre("save", async function () {
+  // check if password modified or not
+  if (!this.isModified("password")) return;
+  // hash password & save in user
+  const result = await hashPassword(this.password);
+  this.password = result;
+});
 
+const User = mongoose.model.User || mongoose.model("User", userSchema);
 
-
-
-export default mongoose.model('User', userSchema);
+export default User;
