@@ -1,4 +1,4 @@
-import { env } from "d:/dev/tartib/server/config/env.js";
+import { env } from "./env.js";
 import { HEADERS } from "../constants/index.js";
 
 // allowed origins include client and admin urls
