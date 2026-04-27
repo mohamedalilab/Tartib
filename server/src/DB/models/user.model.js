@@ -120,6 +120,18 @@ userSchema.pre("save", async function () {
   this.password = result;
 });
 
+userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
+  if (this.passwordChangedAt) {
+    // Convert milliseconds to seconds
+    // Because JWT iat is in seconds, not milliseconds
+    // Converts the result into an integer (base 10)
+    const changedTime = parseInt(this.passwordChangedAt.getTime() / 1000, 10);
+    // true = password changed after token was issued
+    return JWTTimestamp < changedTime;
+  }
+  return false;
+};
+
 const User = mongoose.model.User || mongoose.model("User", userSchema);
 
 export default User;
