@@ -6,6 +6,7 @@
 import jwt from "jsonwebtoken"
 import { env } from "../config/env.js";
 import { JWT_ERRORS, MESSAGES } from "../constants/index.js";
+import { createUnauthorizedError } from "../errors/error.factory.js";
 
 // ─── Generate Tokens ──────────────────────────────────────────────────────────
 

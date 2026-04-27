@@ -1,9 +1,15 @@
 import * as AuthService from "./auth.service.js";
 import asyncHandler from "../../middlewares/asyncHandler.js";
 import { createBadRequestError } from "../../errors/error.factory.js";
-import { createdResponse, successResponse } from "../../utils/apiResponse.util.js";
+import {
+  createdResponse,
+  successResponse,
+} from "../../utils/apiResponse.util.js";
 import { HEADERS, HTTP_STATUS, MESSAGES } from "../../constants/index.js";
-import { getClearCookieConfig, getRefreshCookieConfig } from "../../config/cookie.config.js";
+import {
+  getClearCookieConfig,
+  getRefreshCookieConfig,
+} from "../../config/cookie.config.js";
 
 // ============================================================
 //                      AUTH CONTROLLER
@@ -16,7 +22,8 @@ import { getClearCookieConfig, getRefreshCookieConfig } from "../../config/cooki
  */
 export const register = asyncHandler(async (req, res) => {
   // 1. check for request body
-  if (!req.body) throw createBadRequestError(MESSAGES.VALIDATION.REQUIRED_FIELDS);
+  if (!req.body)
+    throw createBadRequestError(MESSAGES.VALIDATION.REQUIRED_FIELDS);
   // 2. register user and get tokens service
   const { user, accessToken, refreshToken } = await AuthService.registerUser(
     req.body
@@ -84,4 +91,31 @@ export const logout = asyncHandler(async (req, res) => {
 
   // 4. return no content
   res.status(HTTP_STATUS.NO_CONTENT).end();
+});
+
+// ------------------------------------------------------------
+
+/**
+ * @desc    Change password for authenticated user
+ * @route   PATCH /api/auth/change-password
+ * @access  Private
+ */
+export const changePassword = asyncHandler(async (req, res) => {
+  // 1. validate current and new password in body
+  const { currentPassword, newPassword } = req.body;
+  if (!currentPassword || !newPassword)
+    throw createBadRequestError(MESSAGES.VALIDATION.REQUIRED_FIELDS);
+  // 2. get refresh token if exists in cookie
+  const refreshToken = req.cookies?.[HEADERS.REFRESH_TOKEN];
+  // 3. change password service
+  await AuthService.changePassword(
+    req.decoded.userId,
+    currentPassword,
+    newPassword,
+    refreshToken
+  );
+  // 4. clear refresh token cookie since all sessions are invalidated
+  res.clearCookie(HEADERS.REFRESH_TOKEN, getClearCookieConfig());
+  // 5. return success
+  return res.json(successResponse(null, MESSAGES.AUTH.PASSWORD_CHANGED));
 });

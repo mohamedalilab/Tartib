@@ -12,6 +12,7 @@ import { hashValue, verifyPassword } from "../../utils/hash.util.js";
 import { safeUserData } from "../../helpers/user.helper.js";
 import {
   createConflictError,
+  createNotFoundError,
   createUnauthorizedError,
 } from "../../errors/error.factory.js";
 
@@ -156,7 +157,7 @@ export const logoutUser = async (refreshToken) => {
   // 2. check if user exist
   const user = await User.findById(decoded.userId).exec();
   if (!user) return;
-  
+
   // 3. hash token & detect token reused
   const hashedToken = hashValue(refreshToken);
   const tokenInDB = user.refreshTokens.find((rt) => rt.token === hashedToken);
@@ -178,5 +179,53 @@ export const logoutUser = async (refreshToken) => {
     );
   }
   // 4. save changes inDB
+  await user.save();
+};
+
+// ------------------------------------------------------------
+
+/**
+ * Changes the password for an already authenticated user.
+ * @param {string} userId
+ * @param {string} currentPassword
+ * @param {string} newPassword
+ * @param {string} refreshToken
+ */
+export const changePassword = async (
+  userId,
+  currentPassword,
+  newPassword,
+  refreshToken
+) => {
+  // 1. find user by id
+  const user = await User.findById(userId).select("+password").exec();
+  if (!user) throw createNotFoundError(MESSAGES.USER.NOT_FOUND);
+
+  // 2. verify current password
+  const valid = await verifyPassword(currentPassword, user.password);
+  if (!valid)
+    throw createUnauthorizedError(MESSAGES.AUTH.INVALID_CURRENT_PASSWORD);
+
+  // 3. make sure new password is not same as old one
+  const isSameAsOld = await verifyPassword(newPassword, user.password);
+  if (isSameAsOld) throw createBadRequestError(MESSAGES.AUTH.SAME_PASSWORD);
+
+  // 4. add newPassword in user and remember it will hash in model !!!
+  user.password = newPassword;
+  user.passwordChangedAt = Date.now();
+  user.passwordReset.token = undefined;
+  user.passwordReset.expireAt = undefined;
+
+  // 5. invalidate all refresh tokens for security except the current device !!!
+  if (refreshToken) {
+    const currentHashToken = hashValue(refreshToken);
+    user.refreshTokens = user.refreshTokens.filter(
+      (rtoken) => rtoken.token === currentHashToken
+    );
+  } else {
+    user.refreshTokens = [];
+  }
+
+  // 6. save changes in DB
   await user.save();
 };
