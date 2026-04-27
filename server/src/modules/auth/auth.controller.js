@@ -1,9 +1,9 @@
 import * as AuthService from "./auth.service.js";
 import asyncHandler from "../../middlewares/asyncHandler.js";
 import { createBadRequestError } from "../../errors/error.factory.js";
-import { createdResponse } from "../../utils/apiResponse.util.js";
+import { createdResponse, successResponse } from "../../utils/apiResponse.util.js";
 import { HEADERS, HTTP_STATUS, MESSAGES } from "../../constants/index.js";
-import { getRefreshCookieConfig } from "../../config/cookie.config.js";
+import { getClearCookieConfig, getRefreshCookieConfig } from "../../config/cookie.config.js";
 
 // ============================================================
 //                      AUTH CONTROLLER
@@ -33,3 +33,55 @@ export const register = asyncHandler(async (req, res) => {
     );
 });
 
+// ------------------------------------------------------------
+
+/**
+ * @desc    Login user and return access token
+ * @route   POST /api/auth/login
+ * @access  Public
+ */
+// 1. check for userId in body decoded
+export const login = asyncHandler(async (req, res) => {
+  // 1. check for request body
+  if (!req.body) createBadRequestErroق(MESSAGES.VALIDATION.REQUIRED_FIELDS);
+  const { email, password } = req.body;
+
+  // 2. get current refresh token from cookie if exist
+  const currentRefreshToken = req.cookies?.[HEADERS.REFRESH_TOKEN];
+
+  // 3. login user service
+  const { user, accessToken, refreshToken } = await AuthService.loginUser(
+    email,
+    password,
+    currentRefreshToken
+  );
+
+  // 4. set refresh token in secure Cookie
+  res.cookie(HEADERS.REFRESH_TOKEN, refreshToken, getRefreshCookieConfig());
+
+  // 5. return success sesponse with safe user data and access token
+  return res.json(
+    successResponse({ user, accessToken }, MESSAGES.AUTH.LOGIN_SUCCESS)
+  );
+});
+
+// ------------------------------------------------------------
+
+/**
+ * @desc    Logout user and invalidate token
+ * @route   POST /api/auth/logout
+ * @access  Private
+ */
+export const logout = asyncHandler(async (req, res) => {
+  // 1. extract refresh token from cookie
+  const refreshToken = req.cookies?.[HEADERS.REFRESH_TOKEN];
+
+  // 2. clear cookie immediately
+  res.clearCookie(HEADERS.REFRESH_TOKEN, getClearCookieConfig());
+
+  // 3. remove token from DB if it exists
+  if (refreshToken) await AuthService.logoutUser(refreshToken);
+
+  // 4. return no content
+  res.status(HTTP_STATUS.NO_CONTENT).end();
+});
