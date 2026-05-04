@@ -38,4 +38,11 @@ export const env = {
     ACCESS_EXPIRE: process.env.JWT_ACCESS_EXPIRE || "15m",
     REFRESH_EXPIRE: process.env.JWT_REFRESH_EXPIRE || "7d",
   },
+
+  // EMAIL
+  EMAIL: {
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
+    FROM_EMAIL: process.env.EMAIL_FROM || "mail@mohamed-ali.me",
+    FROM_NAME: process.env.EMAIL_FROM_NAME || "Tartib",
+  },
 };

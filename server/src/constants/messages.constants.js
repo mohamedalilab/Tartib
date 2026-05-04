@@ -48,9 +48,6 @@ export const MESSAGES = {
     NO_PERMISSION: "You do not have permission to access this resource",
   },
 
-  SECURITY: {
-  },
-
   USER: {
     EMAIL_ALREADY_EXISTS: "Email already exists",
     FETCHED: "User fetched successfully",
@@ -70,5 +67,14 @@ export const MESSAGES = {
     REQUIRED_FIELDS: "All required fields must be provided",
     INVALID_ID: "Invalid ID format",
     INVALID_QUANTITY: "Quantity must be a positive integer.",
+  },
+
+  EMAIL: {
+    REQUIRED_FIELDS: "Missing required email fields",
+    INVALID_EMAIL: "Invalid email address",
+    SEND_FAILED: "Failed to send email",
+    PROVIDER_ERROR: "Email provider error",
+    SENT_SUCCESS: "Email sent successfully",
+    NOT_CONFIGURED: "Email service is not configured",
   },
 };
