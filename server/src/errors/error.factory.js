@@ -40,3 +40,12 @@ export const createTooManyRequestsError = (message = "Too many requests") =>
 // 500 — unexpected server failure, not from the client
 export const createInternalError = (message = "Internal server error") =>
   new ApiError(HTTP_STATUS.INTERNAL_SERVER_ERROR, message);
+
+// 502 — external service failed
+export const createBadGatewayError = (message = "Bad gateway") =>
+  new ApiError(HTTP_STATUS.BAD_GATEWAY, message);
+
+// 503 — service unavailable
+export const createServiceUnavailableError = (
+  message = "Service unavailable"
+) => new ApiError(HTTP_STATUS.SERVICE_UNAVAILABLE, message);
