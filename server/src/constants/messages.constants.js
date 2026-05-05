@@ -84,10 +84,12 @@ export const MESSAGES = {
       PASSWORD_RESET: "Reset your password",
     },
 
-    EMAIL_NOT_VERIFIED:
+    NOT_VERIFIED:
       "Please verify your email address to access this feature.",
     VERIFICATION_SENT: "Verification email sent. Please check your inbox.",
-    EMAIL_ALREADY_VERIFIED: "Email is already verified.",
+    ALREADY_VERIFIED: "Email is already verified.",
+    PENDING_VERIFICATION:
+      "This email is already registered but not verified. Please check your inbox or wait for the token to expire.",
     VERIFICATION_EMAIL_RECENTLY_SENT:
       "Please wait before requesting another verification email.",
     INVALID_VERIFICATION_TOKEN: "Verification token is invalid or expired.",

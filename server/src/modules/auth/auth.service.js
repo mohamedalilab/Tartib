@@ -8,13 +8,24 @@ import {
 } from "../../services/token.service.js";
 import { env } from "../../config/env.js";
 import { getExpiryDate } from "../../utils/date.util.js";
-import { hashValue, verifyPassword } from "../../utils/hash.util.js";
+import {
+  generateHashedToken,
+  hashValue,
+  verifyPassword,
+} from "../../utils/hash.util.js";
 import { safeUserData } from "../../helpers/user.helper.js";
 import {
+  createBadRequestError,
   createConflictError,
   createNotFoundError,
   createUnauthorizedError,
 } from "../../errors/error.factory.js";
+import { sendEmail } from "../../services/email/email.service.js";
+import {
+  passwordResetEmailHtml,
+  verificationEmailHtml,
+  welcomeEmailHtml,
+} from "../../services/email/email.templates.js";
 
 // ============================================================
 //                      AUTH SERVICE
@@ -29,40 +40,53 @@ export const registerUser = async (userData) => {
   // 1. check if email already exist
   const emailExist = await User.findOne({ email: userData.email }).exec();
   if (emailExist) {
-    throw createConflictError(MESSAGES.USER.EMAIL_ALREADY_EXISTS);
+    // if verified: block registering
+    if (emailExist.emailVerified) {
+      throw createConflictError(MESSAGES.USER.EMAIL_ALREADY_EXISTS);
+    }
+
+    // if unverified + token expired: delete old account, allow re-register
+    if (emailExist.emailVerificationToken?.expireAt < new Date()) {
+      await emailExist.deleteOne();
+    } else {
+      // unverified but token still valid -> tell user to check inbox
+      throw createConflictError(MESSAGES.EMAIL.PENDING_VERIFICATION);
+    }
   }
 
   // 2. create object_id for user
   const userId = new mongoose.Types.ObjectId();
 
-  // 3. define user roles: default: ["customer"]
-  const roles = [USER_ROLES.CUSTOMER];
+  // 3. generate email verification token
+  const { token: verificationToken, hashed: hashedVerificationToken } =
+    generateHashedToken();
 
-  // 4. generate access and refresh token
-  const accessToken = generateAccessToken({ userId, roles });
-  const refreshToken = generateRefreshToken({ userId });
-
-  // 5. refreshTokens array with hashed refresh token and expireAt
-  const refreshTokens = [
-    {
-      token: hashValue(refreshToken),
-      expireAt: getExpiryDate(env.JWT.REFRESH_EXPIRE),
-    },
-  ];
-
-  // 6. create & save user in DB
+  // 4. create & save user in DB
   const user = await User.create({
     _id: userId,
     ...userData,
-    roles,
-    refreshTokens,
+    emailVerificationToken: {
+      token: hashedVerificationToken,
+      expireAt: getExpiryDate(env.EMAIL.VERIFICATION_EXPIRE),
+    },
   });
 
-  // 7. return safe user data + tokens
+  // 5. send verify email
+  await sendEmail({
+    to: user.email,
+    subject: MESSAGES.EMAIL.SUBJECTS.VERIFICATION,
+    html: verificationEmailHtml(
+      user.firstName,
+      `${env.CLIENT_URL}/?token=${verificationToken}`
+    ),
+  });
+
+  // 6. return safe user data + tokens
   return {
-    user: safeUserData(user),
-    accessToken,
-    refreshToken,
+    userId: user._id,
+    fullName: user.fullName,
+    email: user.email,
+    emailVerified: false,
   };
 };
 
@@ -228,4 +252,65 @@ export const changePassword = async (
 
   // 6. save changes in DB
   await user.save();
+};
+
+// ------------------------------------------------------------
+
+/**
+ * @desc    Verify email using token from link
+ * @param   {string} token - Raw token from body
+ * @returns {void}
+ */
+export const verifyEmail = async (token) => {
+  // 1. hash the incoming token to compare with DB
+  const hashedToken = hashValue(token);
+
+  // 2. find user with token and make sure it hasn't expired
+  const user = await User.findOne({
+    "emailVerificationToken.token": hashedToken,
+    "emailVerificationToken.expireAt": { $gt: new Date() },
+  }).exec();
+  if (!user)
+    throw createBadRequestError(MESSAGES.EMAIL.INVALID_VERIFICATION_TOKEN);
+
+  // 3. check if already verify
+  if (user.emailVerified)
+    throw createBadRequestError(MESSAGES.EMAIL.EMAIL_ALREADY_VERIFIED);
+
+  // 4. generate access and refresh token
+  const accessToken = generateAccessToken({
+    userId: user._id,
+    roles: user.roles,
+  });
+  const refreshToken = generateRefreshToken({ userId: user._id });
+
+  // 5. refreshTokens array with hashed token and expireAt
+  user.refreshTokens = [
+    {
+      token: hashValue(refreshToken),
+      expireAt: getExpiryDate(env.JWT.REFRESH_EXPIRE),
+    },
+  ];
+
+  // 6. mark as verified + clear token fields
+  user.emailVerified = true;
+  user.emailVerificationToken.token = null;
+  user.emailVerificationToken.expireAt = null;
+
+  // 7. save changes in DB
+  await user.save();
+
+  // 8. send verification email
+  await sendEmail({
+    to: user.email,
+    subject: MESSAGES.EMAIL.SUBJECTS.VERIFICATION,
+    html: welcomeEmailHtml(user.firstName),
+  });
+
+  // 9. return safe user data + tokens
+  return {
+    user: safeUserData(user),
+    accessToken,
+    refreshToken,
+  };
 };

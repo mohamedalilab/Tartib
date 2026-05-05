@@ -23,6 +23,9 @@ import {
 import { env } from "../config/env.js";
 
 export const errorHandler = (error, req, res, next) => {
+  if(env.isDevelopment){
+    console.log(error)
+  }
   error.message = error.message || MESSAGES.ERROR.SERVER_ERROR;
   // if no status code then set it 500
   error.statusCode = error.statusCode || HTTP_STATUS.INTERNAL_SERVER_ERROR;

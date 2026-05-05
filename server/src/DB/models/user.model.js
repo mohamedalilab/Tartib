@@ -63,10 +63,16 @@ const userSchema = new mongoose.Schema(
     },
 
     // EMAIL VERIFICATION
-    emailVerification: {
-      isVerified: Boolean,
-      token: String,
-      expiresAt: Date,
+    emailVerified: { type: Boolean, default: false },
+    emailVerificationToken: {
+      token: {
+        type: String,
+        default: null,
+      },
+      expireAt: {
+        type: Date,
+        default: null,
+      },
     },
 
     // SECURITY
@@ -131,6 +137,11 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
   }
   return false;
 };
+
+// Full name (computed, not stored)
+userSchema.virtual('fullName').get(function () {
+  return `${this.firstName} ${this.lastName}`;
+});
 
 const User = mongoose.model.User || mongoose.model("User", userSchema);
 

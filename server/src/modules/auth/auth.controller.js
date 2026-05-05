@@ -24,19 +24,18 @@ export const register = asyncHandler(async (req, res) => {
   // 1. check for request body
   if (!req.body)
     throw createBadRequestError(MESSAGES.VALIDATION.REQUIRED_FIELDS);
-  // 2. register user and get tokens service
-  const { user, accessToken, refreshToken } = await AuthService.registerUser(
-    req.body
-  );
 
-  // 3. set refresh token in secure Cookie
-  res.cookie(HEADERS.REFRESH_TOKEN, refreshToken, getRefreshCookieConfig());
+  // 2. register user and get tokens service
+  const user = await AuthService.registerUser(req.body);
 
   // 4. return success response with safe user data and access token
   return res
     .status(HTTP_STATUS.CREATED)
     .json(
-      createdResponse({ user, accessToken }, MESSAGES.AUTH.REGISTER_SUCCESS)
+      createdResponse(
+        { user, message: MESSAGES.EMAIL.VERIFICATION_SENT },
+        MESSAGES.AUTH.REGISTER_SUCCESS
+      )
     );
 });
 
@@ -50,7 +49,7 @@ export const register = asyncHandler(async (req, res) => {
 // 1. check for userId in body decoded
 export const login = asyncHandler(async (req, res) => {
   // 1. check for request body
-  if (!req.body) createBadRequestErroق(MESSAGES.VALIDATION.REQUIRED_FIELDS);
+  if (!req.body) createBadRequestError(MESSAGES.VALIDATION.REQUIRED_FIELDS);
   const { email, password } = req.body;
 
   // 2. get current refresh token from cookie if exist
@@ -118,4 +117,32 @@ export const changePassword = asyncHandler(async (req, res) => {
   res.clearCookie(HEADERS.REFRESH_TOKEN, getClearCookieConfig());
   // 5. return success
   return res.json(successResponse(null, MESSAGES.AUTH.PASSWORD_CHANGED));
+});
+
+// ------------------------------------------------------------
+
+/**
+ * @desc    Verify email using token from link
+ * @route   POST /api/auth/verify-email
+ * @access  Public
+ */
+
+export const verifyEmail = asyncHandler(async (req, res) => {
+  // 1. check for token from body param
+  const { token } = req.body;
+  if (!token)
+    throw createBadRequestError(MESSAGES.EMAIL.INVALID_VERIFICATION_TOKEN);
+
+  // 2. verify email and get user data & tokens
+  const { user, accessToken, refreshToken } = await AuthService.verifyEmail(
+    token
+  );
+
+  // 3. set refresh token in secure Cookie
+  res.cookie(HEADERS.REFRESH_TOKEN, refreshToken, getRefreshCookieConfig());
+
+  // 4. return success response with safe user data and access token
+  return res.json(
+    successResponse({ user, accessToken }, MESSAGES.EMAIL.EMAIL_VERIFIED)
+  );
 });

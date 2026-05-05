@@ -15,6 +15,8 @@ router.post("/login", AuthController.login);
 
 router.post("/logout", AuthController.logout);
 
+router.post("/verify-email", AuthController.verifyEmail);
+
 // ----------------- Private Routes -----------------
 
 router.use(verifyAccessMW);
