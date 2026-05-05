@@ -106,13 +106,18 @@ export const loginUser = async (email, password, currentRefreshToken) => {
   // 2. validate password
   const validPwd = await verifyPassword(password, user.password);
   if (!validPwd) throw createUnauthorizedError(MESSAGES.AUTH.LOGIN_FAILED);
+  
+  // 3. Check if email is verified
+  if (!user.emailVerified) {
+    throw createUnauthorizedError(MESSAGES.EMAIL.NOT_VERIFIED);
+  }
 
-  // 3. clean up expire tokens first !!!!!
+  // 4. clean up expire tokens first !!!!!
   user.refreshTokens = user.refreshTokens.filter(
     (rt) => rt.expireAt > new Date()
   );
 
-  // 4. handle existing refresh token cookie
+  // 5. handle existing refresh token cookie
   if (currentRefreshToken) {
     // hash token to find it
     const currentHashedToken = hashValue(currentRefreshToken);
@@ -140,25 +145,25 @@ export const loginUser = async (email, password, currentRefreshToken) => {
     }
   }
 
-  // 5. generate access and refresh token
+  // 6. generate access and refresh token
   const accessToken = generateAccessToken({
     userId: user._id,
     roles: user.roles,
   });
   const refreshToken = generateRefreshToken({ userId: user._id });
 
-  // 6. hash new refresh token and store it
+  // 7. hash new refresh token and store it
   const hashedToken = hashValue(refreshToken);
   user.refreshTokens.push({
     token: hashedToken,
     expireAt: getExpiryDate(env.JWT.REFRESH_EXPIRE),
   });
 
-  // 7. update last login & save changes in DB
+  // 8. update last login & save changes in DB
   user.lastLoginAt = new Date();
   await user.save();
 
-  // 8. return safe user data + tokens
+  // 9. return safe user data + tokens
   return {
     user: safeUserData(user),
     accessToken,
