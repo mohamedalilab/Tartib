@@ -1,12 +1,12 @@
 import { Resend } from "resend";
-import { env } from "../config/env.js";
-import { MESSAGES } from "../constants/index.js";
-import { REGEX } from "../utils/regex.util.js";
+import { env } from "../../config/env.js";
+import { REGEX } from "../../utils/regex.util.js";
+import { MESSAGES } from "../../constants/messages.constants.js";
 import {
   createBadGatewayError,
   createBadRequestError,
   createValidationError,
-} from "../errors/error.factory.js";
+} from "../../errors/error.factory.js";
 
 // Create Resend client with API key from env
 const resendClient = new Resend(env.EMAIL.API_KEY);
@@ -29,7 +29,7 @@ export async function sendEmail({ to, subject, html }) {
 
   // 2. Validate email format using regex pattern
   if (!REGEX.EMAIL.test(to))
-    throw createValidationError(MESSAGES.VALIDATION.INVALID_EMAIL);
+    throw createValidationError(MESSAGES.EMAIL.INVALID_RECIPIENT);
 
   try {
     // 3. Send email via Resend API
@@ -43,13 +43,14 @@ export async function sendEmail({ to, subject, html }) {
     // 4. Handle API errors
     if (!response || response?.error)
       throw createBadGatewayError(
-        response.error.message || MESSAGES.EMAIL.SEND_FAILED
+        response.error.message || MESSAGES.EMAIL.PROVIDER_OFFLINE
       );
 
     // 5. Return successful response data (contains email ID)
     return response.data;
-    
   } catch (err) {
-    throw createBadGatewayError(err?.message || MESSAGES.EMAIL.SEND_FAILED);
+    throw createBadGatewayError(
+      err?.message || MESSAGES.EMAIL.PROVIDER_OFFLINE
+    );
   }
 }

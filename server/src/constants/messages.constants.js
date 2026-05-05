@@ -71,10 +71,27 @@ export const MESSAGES = {
 
   EMAIL: {
     REQUIRED_FIELDS: "Missing required email fields",
-    INVALID_EMAIL: "Invalid email address",
-    SEND_FAILED: "Failed to send email",
-    PROVIDER_ERROR: "Email provider error",
-    SENT_SUCCESS: "Email sent successfully",
+    INVALID_RECIPIENT: "Cannot send email to an invalid address.",
+    PROVIDER_OFFLINE: "Email service is temporarily unavailable.",
     NOT_CONFIGURED: "Email service is not configured",
+
+    SEND_FAILED: "Failed to send email. Please try again later.",
+    SENT_SUCCESS: "Email sent successfully",
+
+    SUBJECTS: {
+      WELCOME: "Welcome to Tartib Platform!",
+      VERIFICATION: "Verify your email address",
+      PASSWORD_RESET: "Reset your password",
+    },
+
+    EMAIL_NOT_VERIFIED:
+      "Please verify your email address to access this feature.",
+    VERIFICATION_SENT: "Verification email sent. Please check your inbox.",
+    EMAIL_ALREADY_VERIFIED: "Email is already verified.",
+    VERIFICATION_EMAIL_RECENTLY_SENT:
+      "Please wait before requesting another verification email.",
+    INVALID_VERIFICATION_TOKEN: "Verification token is invalid or expired.",
+
+    RESET_LINK_SENT: "Password reset link sent to your email.",
   },
 };

@@ -19,13 +19,9 @@ export const env = {
   // Database
   DATABASE_URI: process.env.DATABASE_URI,
 
-  // Cookies
-  COOKIE: {
-    REFRESH_MAX_AGE:
-      parseInt(process.env.COOKIE_REFRESH_MAX_AGE) || 2 * 24 * 60 * 60 * 1000,
-    HTTP_ONLY: process.env.COOKIE_HTTP_ONLY === "true",
-    SECURE: process.env.COOKIE_SECURE === "true",
-    SAME_SITE: process.env.COOKIE_SAME_SITE || "lax",
+  // AUTH
+  AUTH: {
+    RESET_PASSWORD_EXPIRE: process.env.RESET_PASSWORD_EXPIRE || "15m",
   },
 
   // hashing
@@ -39,10 +35,20 @@ export const env = {
     REFRESH_EXPIRE: process.env.JWT_REFRESH_EXPIRE || "7d",
   },
 
+  // Cookies
+  COOKIE: {
+    REFRESH_MAX_AGE:
+      parseInt(process.env.COOKIE_REFRESH_MAX_AGE) || 2 * 24 * 60 * 60 * 1000,
+    HTTP_ONLY: process.env.COOKIE_HTTP_ONLY === "true",
+    SECURE: process.env.COOKIE_SECURE === "true",
+    SAME_SITE: process.env.COOKIE_SAME_SITE || "lax",
+  },
+
   // EMAIL
   EMAIL: {
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     FROM_EMAIL: process.env.EMAIL_FROM || "mail@mohamed-ali.me",
     FROM_NAME: process.env.EMAIL_FROM_NAME || "Tartib",
+    VERIFICATION_EXPIRE: process.env.EMAIL_VERIFICATION_EXPIRE || "24h",
   },
 };
