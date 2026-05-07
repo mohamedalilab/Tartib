@@ -73,6 +73,10 @@ const userSchema = new mongoose.Schema(
         type: Date,
         default: null,
       },
+      createdAt: {
+        type: Date,
+        default: new Date(),
+      },
     },
 
     // SECURITY
@@ -139,7 +143,7 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
 };
 
 // Full name (computed, not stored)
-userSchema.virtual('fullName').get(function () {
+userSchema.virtual("fullName").get(function () {
   return `${this.firstName} ${this.lastName}`;
 });
 

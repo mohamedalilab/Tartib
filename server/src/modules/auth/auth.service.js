@@ -1,18 +1,18 @@
 import mongoose from "mongoose";
 import User from "../../DB/models/user.model.js";
+import { env } from "../../config/env.js";
 import { MESSAGES, USER_ROLES } from "../../constants/index.js";
 import {
   decodeToken,
   generateAccessToken,
   generateRefreshToken,
 } from "../../services/token.service.js";
-import { env } from "../../config/env.js";
-import { getExpiryDate } from "../../utils/date.util.js";
 import {
   generateHashedToken,
   hashValue,
   verifyPassword,
 } from "../../utils/hash.util.js";
+import { getExpiryDate } from "../../utils/date.util.js";
 import { safeUserData } from "../../helpers/user.helper.js";
 import {
   createBadRequestError,
@@ -22,7 +22,6 @@ import {
 } from "../../errors/error.factory.js";
 import { sendEmail } from "../../services/email/email.service.js";
 import {
-  passwordResetEmailHtml,
   verificationEmailHtml,
   welcomeEmailHtml,
 } from "../../services/email/email.templates.js";
@@ -47,7 +46,7 @@ export const registerUser = async (userData) => {
 
     // if unverified + token expired: delete old account, allow re-register
     if (emailExist.emailVerificationToken?.expireAt < new Date()) {
-      await emailExist.deleteOne();
+      await User.deleteOne({ _id: emailExist._id });
     } else {
       // unverified but token still valid -> tell user to check inbox
       throw createConflictError(MESSAGES.EMAIL.PENDING_VERIFICATION);
@@ -99,73 +98,83 @@ export const registerUser = async (userData) => {
  * @returns {Object} user, accessToken, refreshToken
  */
 export const loginUser = async (email, password, currentRefreshToken) => {
-  // 1. check if user exists
+  // 1. Verify user, password, email verified
   const user = await User.findOne({ email }).select("+password").exec();
   if (!user) throw createUnauthorizedError(MESSAGES.AUTH.LOGIN_FAILED);
 
-  // 2. validate password
   const validPwd = await verifyPassword(password, user.password);
   if (!validPwd) throw createUnauthorizedError(MESSAGES.AUTH.LOGIN_FAILED);
-  
-  // 3. Check if email is verified
-  if (!user.emailVerified) {
-    throw createUnauthorizedError(MESSAGES.EMAIL.NOT_VERIFIED);
-  }
 
-  // 4. clean up expire tokens first !!!!!
-  user.refreshTokens = user.refreshTokens.filter(
-    (rt) => rt.expireAt > new Date()
-  );
+  if (!user.emailVerified)
+    throw createBadRequestError(MESSAGES.EMAIL.NOT_VERIFIED);
 
-  // 5. handle existing refresh token cookie
+  // 2. manage clean refresh tokens with Reuse Detection
+  // with Atomic Cleanup (Rotation & Expiry)
+  let currentHashedToken = null;
+  let shouldWipeAllTokens = false;
+
+  // handle existing refresh token cookie
   if (currentRefreshToken) {
     // hash token to find it
-    const currentHashedToken = hashValue(currentRefreshToken);
+    currentHashedToken = hashValue(currentRefreshToken);
     const tokenInDB = user.refreshTokens.find(
       (rt) => rt.token === currentHashedToken
     );
     // if cookie exists but not in DB => token was already rotated
-    // else so its old token => remove it + clean up any expired tokens
+    // or its old token => remove it + clean up any expired tokens
     if (!tokenInDB) {
       const decoded = decodeToken(currentRefreshToken);
-      // check if token was generated before password change
-      // if generated after change:
-      // it may user token has been rotated - wipe all including
+      // Attack detection: Valid refresh token (issued after last password change)
+      // but not found in database = token reuse attack
       if (
-        !decoded?.iat ||
-        !user.passwordChangedAt ||
-        !user.changedPasswordAfter(decoded.iat)
+        decoded?.iat &&
+        (!user.passwordChangedAt || !user.changedPasswordAfter(decoded.iat))
       ) {
-        user.refreshTokens = [];
+        shouldWipeAllTokens = true;
       }
-    } else {
-      user.refreshTokens = user.refreshTokens.filter(
-        (rt) => rt.token !== currentHashedToken
-      );
     }
   }
 
-  // 6. generate access and refresh token
+  // 3. generate access and refresh token
   const accessToken = generateAccessToken({
     userId: user._id,
     roles: user.roles,
   });
   const refreshToken = generateRefreshToken({ userId: user._id });
 
-  // 7. hash new refresh token and store it
+  // 4. hash the new refresh token and add expireAt
   const hashedToken = hashValue(refreshToken);
-  user.refreshTokens.push({
+  const newTokenEntry = {
     token: hashedToken,
     expireAt: getExpiryDate(env.JWT.REFRESH_EXPIRE),
+  };
+
+  // 5. Atomic Update last login and push new token
+  const updateQuery = {
+    $set: {
+      refreshTokens: shouldWipeAllTokens
+        ? [newTokenEntry]
+        : [
+            ...user.refreshTokens.filter(
+              (rt) =>
+                rt.expireAt > new Date() && rt.token !== currentHashedToken
+            ),
+            newTokenEntry,
+          ],
+      lastLoginAt: new Date(),
+    },
+  };
+
+  const updatedUser = await User.findByIdAndUpdate(user._id, updateQuery, {
+    returnDocument: true,
   });
 
-  // 8. update last login & save changes in DB
-  user.lastLoginAt = new Date();
-  await user.save();
+  // 6. safe check
+  if (!updatedUser) throw createUnauthorizedError(MESSAGES.AUTH.LOGIN_FAILED);
 
-  // 9. return safe user data + tokens
+  // 7. return safe user data + tokens
   return {
-    user: safeUserData(user),
+    user: safeUserData(updatedUser),
     accessToken,
     refreshToken,
   };
@@ -207,7 +216,7 @@ export const logoutUser = async (refreshToken) => {
       (rt) => rt.token !== hashedToken
     );
   }
-  // 4. save changes inDB
+  // 4. save changes in DB
   await user.save();
 };
 
