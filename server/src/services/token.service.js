@@ -3,7 +3,7 @@
  * @description handles all JWT token operations — generate, verify, and decode.
  */
 
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
 import { env } from "../config/env.js";
 import { JWT_ERRORS, MESSAGES } from "../constants/index.js";
 import { createUnauthorizedError } from "../errors/error.factory.js";
@@ -30,7 +30,7 @@ export const generateRefreshToken = (payload) => {
 export const decodeToken = (token) => {
   return jwt.decode(token);
 };
-  
+
 /**
  * Verifies a token aganist secret Throws ApiError if invalid, expired.
  * @param {string} token
@@ -49,7 +49,6 @@ export const verifyToken = (token, secret) => {
     throw createUnauthorizedError(MESSAGES.AUTH.TOKEN_FAILED);
   }
 };
-
 
 // ----- Verify Helpers
 export const verifyAccessToken = (token) =>

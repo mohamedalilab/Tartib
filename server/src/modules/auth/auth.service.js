@@ -22,6 +22,7 @@ import {
 } from "../../errors/error.factory.js";
 import { sendEmail } from "../../services/email/email.service.js";
 import {
+  passwordChangedEmailHtmlSimple,
   verificationEmailHtml,
   welcomeEmailHtml,
 } from "../../services/email/email.templates.js";
@@ -233,24 +234,23 @@ export const changePassword = async (
   newPassword,
   refreshToken
 ) => {
-  // 1. find user by id
+  // 1. verify user and password
   const user = await User.findById(userId).select("+password").exec();
   if (!user) throw createNotFoundError(MESSAGES.USER.NOT_FOUND);
 
-  // 2. verify current password
   const valid = await verifyPassword(currentPassword, user.password);
   if (!valid)
     throw createUnauthorizedError(MESSAGES.AUTH.INVALID_CURRENT_PASSWORD);
 
-  // 3. make sure new password is not same as old one
+  // 2. make sure new password is not same as old one
   const isSameAsOld = await verifyPassword(newPassword, user.password);
   if (isSameAsOld) throw createBadRequestError(MESSAGES.AUTH.SAME_PASSWORD);
 
-  // 4. add newPassword in user and remember it will hash in model !!!
+  // 3. add newPassword in user and remember it will hash in model !!!
   user.password = newPassword;
   user.passwordChangedAt = Date.now();
-  user.passwordReset.token = undefined;
-  user.passwordReset.expireAt = undefined;
+  delete user.passwordReset.token;
+  delete user.passwordReset.expireAt;
 
   // 5. invalidate all refresh tokens for security except the current device !!!
   if (refreshToken) {
@@ -264,6 +264,13 @@ export const changePassword = async (
 
   // 6. save changes in DB
   await user.save();
+
+  // 7. send password changed email
+  await sendEmail({
+    to: user.email,
+    subject: MESSAGES.EMAIL.SUBJECTS.PASSWORD_CHANGED,
+    html: passwordChangedEmailHtmlSimple(user.firstName),
+  });
 };
 
 // ------------------------------------------------------------

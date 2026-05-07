@@ -59,3 +59,11 @@ export const passwordResetEmailHtml = (url) =>
   <hr />
   <p style="font-size:12px; color:#999;">If you didn't request this, please ignore this email. Your password won't change.</p>
 `);
+
+export const passwordChangedEmailHtmlSimple = (firstName) =>
+  baseTemplate(`
+  <h2>Password Changed 🔒</h2>
+  <h3>Hi ${firstName}</h3>
+  <p>Your password was successfully changed.</p>
+  <p>Best regards,<br />The Tartib Team</p>
+`);

@@ -82,10 +82,10 @@ export const MESSAGES = {
       WELCOME: "Welcome to Tartib Platform!",
       VERIFICATION: "Verify your email address",
       PASSWORD_RESET: "Reset your password",
+      PASSWORD_CHANGED: "Your Password Has Been Changed",
     },
 
-    NOT_VERIFIED:
-      "Please verify your email address to access this feature.",
+    NOT_VERIFIED: "Please verify your email address to access this feature.",
     VERIFICATION_SENT: "Verification email sent. Please check your inbox.",
     ALREADY_VERIFIED: "Email is already verified.",
     PENDING_VERIFICATION:
