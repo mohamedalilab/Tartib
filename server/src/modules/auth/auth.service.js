@@ -200,13 +200,11 @@ export const logoutUser = async (refreshToken) => {
   const hashedToken = hashValue(refreshToken);
   const tokenInDB = user.refreshTokens.find((rt) => rt.token === hashedToken);
   if (!tokenInDB) {
-    // check if token was generated before password change
-    // if generated after change:
-    // it may user token has been rotated - wipe all including
+    // Attack detection: Valid refresh token (issued after last password change)
+    // but not found in database = token reuse attack
     if (
-      !decoded?.iat ||
-      !user.passwordChangedAt ||
-      !user.changedPasswordAfter(decoded.iat)
+      decoded?.iat &&
+      (!user.passwordChangedAt || !user.changedPasswordAfter(decoded.iat))
     ) {
       user.refreshTokens = [];
     }
