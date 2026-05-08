@@ -90,7 +90,7 @@ export const MESSAGES = {
     ALREADY_VERIFIED: "Email is already verified.",
     PENDING_VERIFICATION:
       "This email is already registered but not verified. Please check your inbox or wait for the token to expire.",
-    VERIFICATION_EMAIL_RECENTLY_SENT:
+    VERIFICATION_RECENTLY_SENT:
       "Please wait before requesting another verification email.",
     INVALID_VERIFICATION_TOKEN: "Verification token is invalid or expired.",
 

@@ -13,13 +13,15 @@ router.post("/register", AuthController.register);
 
 router.post("/login", AuthController.login);
 
-router.post("/logout", AuthController.logout);
-
 router.post("/verify-email", AuthController.verifyEmail);
+
+router.post("/resend-verification", AuthController.resendVerify);
 
 // ----------------- Private Routes -----------------
 
 router.use(verifyAccessMW);
+
+router.post("/logout", AuthController.logout);
 
 router.patch("/change-password", AuthController.changePassword);
 

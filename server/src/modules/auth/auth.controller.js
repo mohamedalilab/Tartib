@@ -146,3 +146,22 @@ export const verifyEmail = asyncHandler(async (req, res) => {
     successResponse({ user, accessToken }, MESSAGES.EMAIL.EMAIL_VERIFIED)
   );
 });
+
+// ------------------------------------------------------------
+
+/**
+ * @desc    Resend email verification token
+ * @route   POST /api/auth/resend-verify
+ * @access  Public
+ */
+export const resendVerify = asyncHandler(async (req, res) => {
+  // 1. validate email in body
+  const { email } = req.body;
+  if (!email) throw createBadRequestError(MESSAGES.EMAIL.REQUIRED_FIELDS);
+
+  // 2. resend verification email service
+  await AuthService.resendVerifyEmail(email);
+
+  // 3. return success
+  return res.json(successResponse(null, MESSAGES.EMAIL.VERIFICATION_SENT));
+});

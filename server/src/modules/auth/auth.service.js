@@ -333,3 +333,60 @@ export const verifyEmail = async (token) => {
     refreshToken,
   };
 };
+
+// ------------------------------------------------------------
+
+/**
+ * @desc    Resend email verification token to user
+ * @param   {string} email - User email address
+ * @returns {Object} message
+ */
+export const resendVerifyEmail = async (email) => {
+  // 1. find user by email
+  const user = await User.findOne({ email }).exec();
+  if (!user) {
+    // Don't reveal if email exists (security)
+    throw createBadRequestError(MESSAGES.EMAIL.VERIFICATION_SENT);
+  }
+
+  // 2. check if already verified
+  if (user.emailVerified)
+    throw createBadRequestError(MESSAGES.EMAIL.ALREADY_VERIFIED);
+
+  // 3. cooldown — block resend if token was issued less than 1 min ago
+  const ONE_MINUTE = 60 * 1000;
+  const tokenExpiry = user.emailVerificationToken?.expireAt;
+  const verificationExpireMs =
+    getExpiryDate(env.EMAIL.VERIFICATION_EXPIRE).getTime() - Date.now();
+  if (
+    tokenExpiry &&
+    tokenExpiry.getTime() - Date.now() > verificationExpireMs - ONE_MINUTE
+  ) {
+    throw createBadRequestError(
+      MESSAGES.EMAIL.VERIFICATION_RECENTLY_SENT
+    );
+  }
+
+  // 4. generate new verification token
+  const { token: verificationToken, hashed: hashedVerificationToken } =
+    generateHashedToken();
+
+  // 5. update token in DB
+  user.emailVerificationToken = {
+    token: hashedVerificationToken,
+    expireAt: getExpiryDate(env.EMAIL.VERIFICATION_EXPIRE),
+  };
+
+  // 6. send verify email
+  await sendEmail({
+    to: user.email,
+    subject: MESSAGES.EMAIL.SUBJECTS.VERIFICATION,
+    html: verificationEmailHtml(
+      user.firstName,
+      `${env.CLIENT_URL}/?token=${verificationToken}`
+    ),
+  });
+
+  // 7. save changes in DB after the email sent as if failed
+  await user.save();
+};
