@@ -9,6 +9,7 @@ import {
 } from "../../services/token.service.js";
 import {
   generateHashedToken,
+  hashPassword,
   hashValue,
   verifyPassword,
 } from "../../utils/hash.util.js";
@@ -22,7 +23,8 @@ import {
 } from "../../errors/error.factory.js";
 import { sendEmail } from "../../services/email/email.service.js";
 import {
-  passwordChangedEmailHtmlSimple,
+  passwordChangedEmailHtml,
+  passwordResetEmailHtml,
   verificationEmailHtml,
   welcomeEmailHtml,
 } from "../../services/email/email.templates.js";
@@ -222,60 +224,6 @@ export const logoutUser = async (refreshToken) => {
 // ------------------------------------------------------------
 
 /**
- * Changes the password for an already authenticated user.
- * @param {string} userId
- * @param {string} currentPassword
- * @param {string} newPassword
- * @param {string} refreshToken
- */
-export const changePassword = async (
-  userId,
-  currentPassword,
-  newPassword,
-  refreshToken
-) => {
-  // 1. verify user and password
-  const user = await User.findById(userId).select("+password").exec();
-  if (!user) throw createNotFoundError(MESSAGES.USER.NOT_FOUND);
-
-  const valid = await verifyPassword(currentPassword, user.password);
-  if (!valid)
-    throw createUnauthorizedError(MESSAGES.AUTH.INVALID_CURRENT_PASSWORD);
-
-  // 2. make sure new password is not same as old one
-  const isSameAsOld = await verifyPassword(newPassword, user.password);
-  if (isSameAsOld) throw createBadRequestError(MESSAGES.AUTH.SAME_PASSWORD);
-
-  // 3. add newPassword in user and remember it will hash in model !!!
-  user.password = newPassword;
-  user.passwordChangedAt = Date.now();
-  delete user.passwordReset.token;
-  delete user.passwordReset.expireAt;
-
-  // 5. invalidate all refresh tokens for security except the current device !!!
-  if (refreshToken) {
-    const currentHashToken = hashValue(refreshToken);
-    user.refreshTokens = user.refreshTokens.filter(
-      (rtoken) => rtoken.token === currentHashToken
-    );
-  } else {
-    user.refreshTokens = [];
-  }
-
-  // 6. save changes in DB
-  await user.save();
-
-  // 7. send password changed email
-  await sendEmail({
-    to: user.email,
-    subject: MESSAGES.EMAIL.SUBJECTS.PASSWORD_CHANGED,
-    html: passwordChangedEmailHtmlSimple(user.firstName),
-  });
-};
-
-// ------------------------------------------------------------
-
-/**
  * @desc    Verify email using token from link
  * @param   {string} token - Raw token from body
  * @returns {void}
@@ -362,9 +310,7 @@ export const resendVerifyEmail = async (email) => {
     tokenExpiry &&
     tokenExpiry.getTime() - Date.now() > verificationExpireMs - ONE_MINUTE
   ) {
-    throw createBadRequestError(
-      MESSAGES.EMAIL.VERIFICATION_RECENTLY_SENT
-    );
+    throw createBadRequestError(MESSAGES.EMAIL.VERIFICATION_RECENTLY_SENT);
   }
 
   // 4. generate new verification token
@@ -389,4 +335,80 @@ export const resendVerifyEmail = async (email) => {
 
   // 7. save changes in DB after the email sent as if failed
   await user.save();
+};
+
+// ------------------------------------------------------------
+
+/**
+ * @desc    Generate password reset token and send email
+ * @param   {string} email - User email address
+ * @returns {Object} message
+ */
+export const forgotPassword = async (email) => {
+  // 1. find user by email
+  const user = await User.findOne({ email }).exec();
+  if (!user) {
+    // Don't reveal if email exists (security)
+    throw createBadRequestError(MESSAGES.AUTH.PASSWORD_RESET_SENT);
+  }
+
+  // 2. generate password reset token
+  const { token: resetToken, hashed: hashedResetToken } = generateHashedToken();
+
+  // 3. save hashed token to DB with expiry
+  user.passwordReset = {
+    token: hashedResetToken,
+    expireAt: getExpiryDate(env.AUTH.RESET_PASSWORD_EXPIRE),
+  };
+
+  // 4. save changes in DB
+  await user.save();
+
+  // 5. send reset email
+  await sendEmail({
+    to: user.email,
+    subject: MESSAGES.EMAIL.SUBJECTS.PASSWORD_RESET,
+    html: passwordResetEmailHtml(
+      `${env.CLIENT_URL}/reset-password?token=${resetToken}`
+    ),
+  });
+};
+
+// ------------------------------------------------------------
+
+/**
+ * @desc    Reset password using token from email link
+ * @param   {string} token - Raw token from email
+ * @param   {string} newPassword - New password
+ * @returns {Object} user, accessToken, refreshToken
+ */
+export const resetPassword = async (token, newPassword) => {
+  // 1. hash incoming token
+  const hashedToken = hashValue(token);
+
+  // 2. find user with valid reset token
+  const user = await User.findOne({
+    "passwordReset.token": hashedToken,
+    "passwordReset.expireAt": { $gt: new Date() },
+  }).exec();
+  if (!user) throw createBadRequestError(MESSAGES.AUTH.INVALID_RESET_TOKEN);
+
+  // 3. update password - remember it will be hashed in pre save !!!!
+  user.password = newPassword;
+  user.passwordChangedAt = Date.now();
+
+  // 4. clear reset token
+  user.passwordReset.token = undefined;
+  user.passwordReset.expireAt = undefined;
+
+  // 5. invalidate all refresh tokens (user is resetting password)
+  user.refreshTokens = [];
+  await user.save();
+
+  // 6. send confirmation email
+  await sendEmail({
+    to: user.email,
+    subject: MESSAGES.EMAIL.SUBJECTS.PASSWORD_CHANGED,
+    html: passwordChangedEmailHtml(user.firstName),
+  });
 };

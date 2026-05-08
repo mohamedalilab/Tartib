@@ -126,7 +126,6 @@ export const changePassword = asyncHandler(async (req, res) => {
  * @route   POST /api/auth/verify-email
  * @access  Public
  */
-
 export const verifyEmail = asyncHandler(async (req, res) => {
   // 1. check for token from body param
   const { token } = req.body;
@@ -164,4 +163,43 @@ export const resendVerify = asyncHandler(async (req, res) => {
 
   // 3. return success
   return res.json(successResponse(null, MESSAGES.EMAIL.VERIFICATION_SENT));
+});
+
+// ------------------------------------------------------------
+
+/**
+ * @desc    Request password reset - send email with token
+ * @route   POST /api/auth/forgot-password
+ * @access  Public
+ */
+export const forgotPassword = asyncHandler(async (req, res) => {
+  // 1. validate email in body
+  const { email } = req.body || {};
+  if (!email) throw createBadRequestError(MESSAGES.VALIDATION.REQUIRED_FIELDS);
+
+  // 2. generate reset token and send email
+  await AuthService.forgotPassword(email);
+
+  // 3. return success
+  return res.json(successResponse(null, MESSAGES.AUTH.PASSWORD_RESET_SENT));
+});
+
+// ------------------------------------------------------------
+
+/**
+ * @desc    Reset password using token from email
+ * @route   POST /api/auth/reset-password
+ * @access  Public
+ */
+export const resetPassword = asyncHandler(async (req, res) => {
+  // 1. validate token and newPassword in body
+  const { token, newPassword } = req.body || {};
+  if (!token || !newPassword)
+    throw createBadRequestError(MESSAGES.VALIDATION.REQUIRED_FIELDS);
+
+  // 2. reset password service
+  await AuthService.resetPassword(token, newPassword);
+
+  // 3. return success response
+  return res.json(successResponse(null, MESSAGES.AUTH.PASSWORD_RESET_SUCCESS));
 });

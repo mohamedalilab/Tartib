@@ -32,13 +32,13 @@ export const env = {
     SECRET_ACCESS: process.env.JWT_SECRET_ACCESS,
     SECRET_REFRESH: process.env.JWT_SECRET_REFRESH,
     ACCESS_EXPIRE: process.env.JWT_ACCESS_EXPIRE || "15m",
-    REFRESH_EXPIRE: process.env.JWT_REFRESH_EXPIRE || "7d",
+    REFRESH_EXPIRE: process.env.JWT_REFRESH_EXPIRE || "1d",
   },
 
   // Cookies
   COOKIE: {
     REFRESH_MAX_AGE:
-      parseInt(process.env.COOKIE_REFRESH_MAX_AGE) || 2 * 24 * 60 * 60 * 1000,
+      parseInt(process.env.COOKIE_REFRESH_MAX_AGE) || 24 * 60 * 60 * 1000,
     HTTP_ONLY: process.env.COOKIE_HTTP_ONLY === "true",
     SECURE: process.env.COOKIE_SECURE === "true",
     SAME_SITE: process.env.COOKIE_SAME_SITE || "lax",
@@ -49,6 +49,6 @@ export const env = {
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     FROM_EMAIL: process.env.EMAIL_FROM || "mail@mohamed-ali.me",
     FROM_NAME: process.env.EMAIL_FROM_NAME || "Tartib",
-    VERIFICATION_EXPIRE: process.env.EMAIL_VERIFICATION_EXPIRE || "24h",
+    VERIFICATION_EXPIRE: process.env.EMAIL_VERIFICATION_EXPIRE || "1h",
   },
 };

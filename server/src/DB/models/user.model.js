@@ -91,7 +91,7 @@ const userSchema = new mongoose.Schema(
 
     passwordReset: {
       token: String,
-      expiresAt: Date,
+      expireAt: Date,
     },
 
     passwordChangedAt: Date,
