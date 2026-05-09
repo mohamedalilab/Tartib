@@ -6,6 +6,7 @@ import {
   decodeToken,
   generateAccessToken,
   generateRefreshToken,
+  verifyRefreshToken,
 } from "../../services/token.service.js";
 import {
   generateHashedToken,
@@ -224,6 +225,73 @@ export const logoutUser = async (refreshToken) => {
 // ------------------------------------------------------------
 
 /**
+ * @desc    Refresh access token using refresh token from cookie
+ * @param   {string} refreshToken - Token from httpOnly cookie
+ * @returns {Object} accessToken, refreshToken
+ */
+export const refreshToken = async (refreshToken) => {
+  // 1. Check if refreshToken exists
+  const hashedToken = hashValue(refreshToken);
+
+  // 2. Find user who owns this token
+  const user = await User.findOne({
+    "refreshTokens.token": hashedToken,
+  }).exec();
+
+  // 3. if no user => detect token reused
+  if (!user) {
+    // extract userId with decodeing without verifying
+    const decoded = decodeToken(refreshToken);
+    // Attack detection: Valid refresh token (issued after last password change)
+    // but not found in database = token reuse attack
+    if (decoded?.userId && decoded?.iat) {
+      // find user by id
+      const target = await User.findById(decoded.userId).exec();
+      if (
+        target &&
+        (!target.passwordChangedAt || !target.changedPasswordAfter(decoded.iat))
+      )
+        target.refreshTokens = [];
+      await target.save();
+    }
+    // then force re-login
+    throw createUnauthorizedError(MESSAGES.AUTH.INVALID_TOKEN);
+  }
+
+  // 4. verify token - it already handled error
+  verifyRefreshToken(refreshToken);
+
+  // 5. Remove old refresh token and add new one (rotation)
+  user.refreshTokens = user.refreshTokens.filter(
+    (rt) => rt.token !== hashedToken && rt.expireAt > new Date()
+  );
+
+  // 6. Generate new tokens & hash new refresh token
+  const accessToken = generateAccessToken({
+    userId: user._id,
+    roles: user.roles,
+  });
+  const newRefreshToken = generateRefreshToken({ userId: user._id });
+
+  // 7. hash refresh token and add it with expire date into user
+  user.refreshTokens.push({
+    token: hashValue(newRefreshToken),
+    expireAt: getExpiryDate(env.JWT.REFRESH_EXPIRE),
+  });
+
+  // 8. Save changes in DB
+  await user.save();
+
+  // 7. Return both tokens
+  return {
+    accessToken,
+    refreshToken: newRefreshToken,
+  };
+};
+
+// ------------------------------------------------------------
+
+/**
  * @desc    Verify email using token from link
  * @param   {string} token - Raw token from body
  * @returns {void}
@@ -410,5 +478,59 @@ export const resetPassword = async (token, newPassword) => {
     to: user.email,
     subject: MESSAGES.EMAIL.SUBJECTS.PASSWORD_CHANGED,
     html: passwordChangedEmailHtml(user.firstName),
+  });
+};
+
+// ------------------------------------------------------------
+
+/**
+ * Changes the password for an already authenticated user.
+ * @param {string} userId
+ * @param {string} currentPassword
+ * @param {string} newPassword
+ * @param {string} refreshToken
+ */
+export const changePassword = async (
+  userId,
+  currentPassword,
+  newPassword,
+  refreshToken
+) => {
+  // 1. verify user and password
+  const user = await User.findById(userId).select("+password").exec();
+  if (!user) throw createNotFoundError(MESSAGES.USER.NOT_FOUND);
+
+  const valid = await verifyPassword(currentPassword, user.password);
+  if (!valid)
+    throw createUnauthorizedError(MESSAGES.AUTH.INVALID_CURRENT_PASSWORD);
+
+  // 2. make sure new password is not same as old one
+  const isSameAsOld = await verifyPassword(newPassword, user.password);
+  if (isSameAsOld) throw createBadRequestError(MESSAGES.AUTH.SAME_PASSWORD);
+
+  // 3. add newPassword in user and remember it will hash in model !!!
+  user.password = newPassword;
+  user.passwordChangedAt = Date.now();
+  delete user.passwordReset.token;
+  delete user.passwordReset.expireAt;
+
+  // 5. invalidate all refresh tokens for security except the current device !!!
+  if (refreshToken) {
+    const currentHashToken = hashValue(refreshToken);
+    user.refreshTokens = user.refreshTokens.filter(
+      (rtoken) => rtoken.token === currentHashToken
+    );
+  } else {
+    user.refreshTokens = [];
+  }
+
+  // 6. save changes in DB
+  await user.save();
+
+  // 7. send password changed email
+  await sendEmail({
+    to: user.email,
+    subject: MESSAGES.EMAIL.SUBJECTS.PASSWORD_CHANGED,
+    html: passwordChangedEmailHtmlSimple(user.firstName),
   });
 };

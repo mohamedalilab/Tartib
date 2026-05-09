@@ -1,6 +1,9 @@
 import * as AuthService from "./auth.service.js";
 import asyncHandler from "../../middlewares/asyncHandler.js";
-import { createBadRequestError } from "../../errors/error.factory.js";
+import {
+  createBadRequestError,
+  createUnauthorizedError,
+} from "../../errors/error.factory.js";
 import {
   createdResponse,
   successResponse,
@@ -95,28 +98,30 @@ export const logout = asyncHandler(async (req, res) => {
 // ------------------------------------------------------------
 
 /**
- * @desc    Change password for authenticated user
- * @route   PATCH /api/auth/change-password
- * @access  Private
+ * @desc    Refresh access token using refresh token from cookie
+ * @route   POST /api/auth/refresh
+ * @access  Public (uses httpOnly cookie)
  */
-export const changePassword = asyncHandler(async (req, res) => {
-  // 1. validate current and new password in body
-  const { currentPassword, newPassword } = req.body;
-  if (!currentPassword || !newPassword)
-    throw createBadRequestError(MESSAGES.VALIDATION.REQUIRED_FIELDS);
-  // 2. get refresh token if exists in cookie
-  const refreshToken = req.cookies?.[HEADERS.REFRESH_TOKEN];
-  // 3. change password service
-  await AuthService.changePassword(
-    req.decoded.userId,
-    currentPassword,
-    newPassword,
-    refreshToken
-  );
-  // 4. clear refresh token cookie since all sessions are invalidated
+export const refreshToken = asyncHandler(async (req, res) => {
+  // 1. Get refresh token from cookie
+  const currentRefreshToken = req.cookies?.[HEADERS.REFRESH_TOKEN];
+  if (!currentRefreshToken)
+    throw createUnauthorizedError(MESSAGES.AUTH.NO_TOKEN);
+
+  // 2. clear old refresh token cookie
   res.clearCookie(HEADERS.REFRESH_TOKEN, getClearCookieConfig());
-  // 5. return success
-  return res.json(successResponse(null, MESSAGES.AUTH.PASSWORD_CHANGED));
+
+  // 3. Call service to get new tokens
+  const { accessToken, refreshToken: newRefreshToken } =
+    await AuthService.refreshToken(currentRefreshToken);
+
+  // 4. Set new refresh token in cookie
+  res.cookie(HEADERS.REFRESH_TOKEN, newRefreshToken, getRefreshCookieConfig());
+
+  // 5. Return new access token
+  return res.json(
+    successResponse({ accessToken }, MESSAGES.AUTH.TOKEN_REFRESHED)
+  );
 });
 
 // ------------------------------------------------------------
@@ -202,4 +207,31 @@ export const resetPassword = asyncHandler(async (req, res) => {
 
   // 3. return success response
   return res.json(successResponse(null, MESSAGES.AUTH.PASSWORD_RESET_SUCCESS));
+});
+
+// ------------------------------------------------------------
+
+/**
+ * @desc    Change password for authenticated user
+ * @route   PATCH /api/auth/change-password
+ * @access  Private
+ */
+export const changePassword = asyncHandler(async (req, res) => {
+  // 1. validate current and new password in body
+  const { currentPassword, newPassword } = req.body;
+  if (!currentPassword || !newPassword)
+    throw createBadRequestError(MESSAGES.VALIDATION.REQUIRED_FIELDS);
+  // 2. get refresh token if exists in cookie
+  const refreshToken = req.cookies?.[HEADERS.REFRESH_TOKEN];
+  // 3. change password service
+  await AuthService.changePassword(
+    req.decoded.userId,
+    currentPassword,
+    newPassword,
+    refreshToken
+  );
+  // 4. clear refresh token cookie since all sessions are invalidated
+  res.clearCookie(HEADERS.REFRESH_TOKEN, getClearCookieConfig());
+  // 5. return success
+  return res.json(successResponse(null, MESSAGES.AUTH.PASSWORD_CHANGED));
 });

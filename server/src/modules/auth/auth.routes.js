@@ -13,6 +13,8 @@ router.post("/register", AuthController.register);
 
 router.post("/login", AuthController.login);
 
+router.post("/refresh", AuthController.refreshToken);
+
 router.post("/verify-email", AuthController.verifyEmail);
 
 router.post("/resend-verification", AuthController.resendVerify);
