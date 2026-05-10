@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router";
-import NavBarLink from "./NavBarLink";
+import NavBarLink from "@/shared/components/NavBarLink";
 import { PUBLIC_LINKS } from "@/shared/constants/navigation";
 import MenuToggleBtn from "@/shared/components/MenuToggleBtn";
 import MobileMenu from "./MobileMenu";
@@ -34,7 +34,7 @@ function Header() {
   }, [isMobile, isOpen]);
 
   return (
-    <header className="sticky top-0 z-100 surface-low w-full md:h-20 h-16 md:py-4 py-2.5 md:px-4">
+    <header className="sticky top-0 z-50 surface-low w-full md:h-20 h-16 md:py-4 py-2.5 md:px-4">
       <div className="layout-container max-width-page flex-between gap-5 z-80">
         <Link className="text-headline-md italic text-primary" to="/">
           Tartib
@@ -44,7 +44,7 @@ function Header() {
             <NavBarLink key={link.path} label={link.label} path={link.path} />
           ))}
           <Link
-            to="/sign-in"
+            to="/signup"
             className="btn btn-accent text-label-md tracking-wider uppercase"
           >
             Enter Workspace

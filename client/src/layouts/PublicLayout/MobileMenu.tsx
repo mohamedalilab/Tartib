@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { PUBLIC_LINKS } from "@/shared/constants/navigation";
-import MenuLink from "./MenuLink";
+import MenuLink from "@/shared/components/MenuLink";
 import { ThemeToggleBtn } from "@/features/theme/components/ThemeToggleBtn";
 
 interface MobileMenuProps {
@@ -22,7 +22,7 @@ function MobileMenu({ closeMenu }: MobileMenuProps) {
 
         <div className="menu-btns flex-between gap-4 mt-5">
           <Link
-            to="/sign-in"
+            to="/signup"
             className="btn btn-accent text-label-lg tracking-wider uppercase flex-1"
             onClick={closeMenu}
           >

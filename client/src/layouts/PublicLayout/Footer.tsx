@@ -1,5 +1,5 @@
 import { CONTACT_LINKS, PUBLIC_LINKS } from "@/shared/constants/navigation";
-import FooterLink from "./FooterLink";
+import FooterLink from "@/shared/components/FooterLink";
 
 function Footer() {
   // get current year
